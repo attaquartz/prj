@@ -35,16 +35,14 @@
 #define PC_TX UART0_TXD
 #define PC_RX UART0_RXD
 
-#define MOTOR_1 PB15
+#define MOTOR_1 PE13
 #define MOTOR_1_DIR PB15
 #define MOTOR_2 PB14
 #define MOTOR_2_DIR PB13
 #define MOTOR_3 PE11
 #define MOTOR_4 PE10
-#define MOTOR_4_DIR PE12
 #define MOTOR_5 PC11
-#define MOTOR_6 PE13
-#define MOTOR_6_DIR PE12
+#define MOTOR_6 PE12
 #define MOTOR_7_PWM PWM1_CH1
 #define MOTOR_7_FG PC9
 #define MOTOR_8 PE8

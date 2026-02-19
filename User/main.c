@@ -347,7 +347,7 @@ void Load_Output_Init(void)
 	GPIO_SetMode(PE, BIT9, GPIO_MODE_OUTPUT); // FAN_3
 	GPIO_SetMode(PE, BIT10, GPIO_MODE_OUTPUT); // MOTOR_4
 	GPIO_SetMode(PE, BIT11, GPIO_MODE_OUTPUT); // MOTOR_3
-	GPIO_SetMode(PE, BIT12, GPIO_MODE_OUTPUT); // MOTOR_6_DIR
+	GPIO_SetMode(PE, BIT12, GPIO_MODE_OUTPUT); // MOTOR_1
 	GPIO_SetMode(PE, BIT13, GPIO_MODE_OUTPUT); // MOTOR_6
 	
 	GPIO_SetMode(PF, BIT3, GPIO_MODE_OUTPUT); // PUMP_1
@@ -364,7 +364,6 @@ void Load_Output_Init(void)
 	MOTOR_4 = on_off;
 	MOTOR_5 = on_off;
 	MOTOR_6 = on_off;
-	MOTOR_6_DIR = on_off;
 	
 	PUMP_1 = on_off;
 	PUMP_2 = on_off;

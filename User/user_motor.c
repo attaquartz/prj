@@ -384,7 +384,6 @@ void motor_4_handler(void)
 		timer.ID_MOTOR_4_DIR_TIME = 0;
 		
         MOTOR_4 = On;
-		MOTOR_4_DIR = Off;
 		
         op.ID_MOTOR_4 = CW;
 		op.ID_MOTOR_4_DIR = CW;
@@ -398,7 +397,7 @@ void motor_4_handler(void)
 			{
 				timer.ID_MOTOR_4_DIR_TIME = 0;
 				
-				MOTOR_4_DIR = On;
+				MOTOR_4 = On;
 				
 				op.ID_MOTOR_4 = CCW;
 				op.ID_MOTOR_4_DIR = CCW;
@@ -410,7 +409,7 @@ void motor_4_handler(void)
 			{
 				timer.ID_MOTOR_4_DIR_TIME = 0;
 				
-				MOTOR_4_DIR = Off;
+				MOTOR_4 = Off;
 				
 				op.ID_MOTOR_4 = CW;
 				op.ID_MOTOR_4_DIR = CW;
@@ -424,7 +423,6 @@ void motor_4_handler(void)
 			timer.ID_MOTOR_4_DIR_TIME = 0;
 			
 			MOTOR_4 = Off;
-			MOTOR_4_DIR = Off;
 			
 			op.ID_MOTOR_4 = Off;
 			op.ID_MOTOR_4_DIR = 0;
@@ -493,7 +491,6 @@ void motor_6_handler(void)
 		timer.ID_MOTOR_4_DIR_TIME = 0;
 		
         MOTOR_6 = On;
-		MOTOR_6_DIR = Off;
 		
         op.ID_MOTOR_6 = CW;
 		op.ID_MOTOR_6_DIR = CW;
@@ -507,7 +504,7 @@ void motor_6_handler(void)
 			{
 				timer.ID_MOTOR_6_DIR_TIME = 0;
 				
-				MOTOR_6_DIR = On;
+				MOTOR_6 = Off;
 				
 				op.ID_MOTOR_6 = CCW;
 				op.ID_MOTOR_6_DIR = CCW;
@@ -519,7 +516,7 @@ void motor_6_handler(void)
 			{
 				timer.ID_MOTOR_6_DIR_TIME = 0;
 				
-				MOTOR_6_DIR = Off;
+				MOTOR_6 = On;
 				
 				op.ID_MOTOR_6 = CW;
 				op.ID_MOTOR_6_DIR = CW;
@@ -533,7 +530,6 @@ void motor_6_handler(void)
 			timer.ID_MOTOR_6_DIR_TIME = 0;
 			
 			MOTOR_6 = Off;
-			MOTOR_6_DIR = Off;
 			
 			op.ID_MOTOR_6 = Off;
 			op.ID_MOTOR_6_DIR = 0;

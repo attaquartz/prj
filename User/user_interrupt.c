@@ -199,7 +199,7 @@ void GPCDEF_IRQHandler(void)
     }
 }
 
-void EINT3_IRQHandler(void)
+void EINT135_IRQHandler(void)
 {
     if(GPIO_GET_INT_FLAG(PD, BIT0)) // SENSOR_ZERO_CROSSING
     {

@@ -1171,18 +1171,12 @@ void modbus_server_write_handler(uint32_t addr)
 			if(registers_nmbs_server[addr] == CW)
 			{
 				MOTOR_4 = On;
-				MOTOR_4_DIR = Off;
 			}
 			else if(registers_nmbs_server[addr] == CCW)
 			{
-				MOTOR_4 = On;
-				MOTOR_4_DIR = On;
-			}
-			else
-			{
 				MOTOR_4 = Off;
-				MOTOR_4_DIR = Off;
 			}
+			else{}
 			
 			op.ID_MOTOR_4 = registers_nmbs_server[addr];
 		}
@@ -1201,18 +1195,12 @@ void modbus_server_write_handler(uint32_t addr)
 			if(registers_nmbs_server[addr] == CW)
 			{
 				MOTOR_6 = On;
-				MOTOR_6_DIR = Off;
 			}
 			else if(registers_nmbs_server[addr] == CCW)
 			{
-				MOTOR_6 = On;
-				MOTOR_6_DIR = On;
-			}
-			else
-			{
 				MOTOR_6 = Off;
-				MOTOR_6_DIR = Off;
 			}
+			else{}
 			
 			op.ID_MOTOR_6 = registers_nmbs_server[addr];
 		}

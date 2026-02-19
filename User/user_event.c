@@ -62,12 +62,13 @@ bool EventQueue_Enqueue(EventQueue *queue, int32_t status, int32_t index)
 
 bool EventQueue_Dequeue(EventQueue *queue, Event *event)
 {
+	__disable_irq();
+	
     if (EventQueue_IsEmpty(queue))
 	{
+		__enable_irq();
         return false;
     }
-    
-    __disable_irq();
     
     event->status = queue->buffer[queue->head].status;
     event->index = queue->buffer[queue->head].index;
