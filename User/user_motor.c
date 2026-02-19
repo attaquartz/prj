@@ -565,8 +565,7 @@ void motor_7_handler(void)
 			}
 		}
 	}
-	
-	if(alert_sensor[TEMP_1].state == Disable)
+	else if(alert_sensor[TEMP_1].state == Disable)
 	{
 		if(op.ID_MOTOR_7 == On)
 		{
@@ -583,6 +582,7 @@ void motor_7_handler(void)
 			}
 		}
 	}
+	else{}
 }
 
 void motor_7_set(uint32_t state)

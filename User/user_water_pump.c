@@ -153,7 +153,18 @@ void water_pump_1_handler(void)
             op.ID_WATER_PUMP_1 = Off;
 		}
 	}
-	else{}
+	else
+	{
+		op.ID_WATER_PUMP_1_START_TIME_INDEX = 0;
+		op.ID_MOTOR_8_OFF_TIME_INDEX = 0; 
+		
+		if(op.ID_WATER_PUMP_1 == On)
+		{
+			WATER_PUMP_1 = Off;
+			
+			op.ID_WATER_PUMP_1 = Off;
+		}
+	}
 }
 
 void water_pump_2_scheduler_init(void)
@@ -291,7 +302,18 @@ void water_pump_2_handler(void)
             op.ID_WATER_PUMP_2 = Off;
 		}
 	}
-	else{}
+	else
+	{
+		op.ID_WATER_PUMP_2_START_TIME_INDEX = 0;
+		op.ID_MOTOR_8_OFF_TIME_INDEX = 0; 
+		
+		if(op.ID_WATER_PUMP_2 == On)
+		{
+			WATER_PUMP_2 = Off;
+			
+			op.ID_WATER_PUMP_2 = Off;
+		}
+	}
 }
 
 void water_pump_3_handler(void)
