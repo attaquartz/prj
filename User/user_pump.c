@@ -56,6 +56,20 @@ void pump_1_handler(void)
 		{
 			if(op.ID_PUMP_1 == Off)
             {
+				if(op.ID_VALVE_8 == On)
+				{
+					VALVE_8 = Off;
+					
+					op.ID_VALVE_8 = Off;
+				}
+				
+				if(op.ID_VALVE_7 == Off)
+				{
+					VALVE_7 = On;
+					
+					op.ID_VALVE_7 = On;
+				}
+					
                 PUMP_1 = On;
 				
                 op.ID_PUMP_1 = On;
