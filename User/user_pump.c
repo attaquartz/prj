@@ -125,6 +125,9 @@ void pump_3_scheduler(void)
 	
 	uint32_t arr_size = sizeof(pump_3_schedule) / sizeof(uint32_t);
 	
+	if(sp.ID_PUMP_3_INTERVAL == 0)
+		return;
+	
 	if((current_hour == 0) && (pump_3_last_hour == 23))
     {
         if(!pump_3_day_changed)

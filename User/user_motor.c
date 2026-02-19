@@ -154,43 +154,6 @@ void motor_2_scheduler(void)
         
         motor_1_was_on = false;
     }
-	
-	/*if(op.ID_ACTUATOR_1  == On)
-    {
-        actuator_1_was_on = true;
-    }
-	
-	if((actuator_1_was_on == true) && (op.ID_MOTOR_2_INDEX != 0))
-	{
-		if(op.ID_ACTUATOR_1 == Off)
-		{
-			timer.ID_MOTOR_2_OP_TIME = 0;
-			timer.ID_MOTOR_2_DIR_TIME = 0;
-			
-			MOTOR_2 = Off;
-			MOTOR_2_DIR = Off;
-			
-			op.ID_MOTOR_2 = Stop;
-			op.ID_MOTOR_2_DIR = CW;
-			op.ID_MOTOR_2_DIR_INDEX = Stop;
-			
-			if(op.ID_MOTOR_2_INDEX == Dry)
-			{
-				op.ID_MOTOR_2_INDEX = Crush;
-			}
-			else if(op.ID_MOTOR_2_INDEX == Crush)
-			{
-				op.ID_MOTOR_2_INDEX = Out;
-			}
-			else if(op.ID_MOTOR_2_INDEX == Out)
-			{
-				op.ID_MOTOR_2_INDEX = 0;
-			}
-			else{}
-				
-			actuator_1_was_on = false;
-		}
-	}*/
 }
 
 void motor_2_handler(void)
@@ -618,6 +581,9 @@ void motor_8_handler(void)
 	};
 	
 	uint32_t arr_size = sizeof(sludge_discharge_schedule) / sizeof(uint32_t);
+	
+	if(sp.ID_WATER_PUMP_5_INTERVAL == 0)
+		return;
 	
 	uint8_t current_hour = rtc.u32Hour;
     

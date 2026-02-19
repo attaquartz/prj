@@ -208,7 +208,7 @@ void user_switch_handler(uint32_t sw)
 			
 			case EMERGENCY:
 			{
-				
+				emergency_handler(Enable);
 			}
 			break;
 			
@@ -239,7 +239,7 @@ void user_switch_handler(uint32_t sw)
 			
 			case EMERGENCY:
 			{
-				
+				emergency_handler(Disable);
 			}
 			break;
 			

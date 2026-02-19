@@ -40,6 +40,9 @@ void valve_1_scheduler(void)
 	
 	uint32_t arr_size = sizeof(valve_1_schedule) / sizeof(uint32_t);
 	
+	if(sp.ID_VALVE_1_INTERVAL == 0)
+		return;
+	
 	if((current_hour == 0) && (valve_1_last_hour == 23))
     {
 		if(!valve_1_day_changed)
@@ -259,6 +262,13 @@ void valve_3_handler(void)
 {
 	if(op.ID_VALVE_AIR_LIFTER_INDEX == ID_VALVE_3_ON_TIME)
 	{
+		if(sp.ID_VALVE_3_ON_TIME == 0)
+		{
+			op.ID_VALVE_AIR_LIFTER_INDEX = ID_VALVE_3_OFF_DELAY;
+			
+			return;
+		}
+		
 		if(VALVE_3 == Off)
 		{
 			VALVE_3 = On;
@@ -278,6 +288,13 @@ void valve_3_handler(void)
 	}
 	else if(op.ID_VALVE_AIR_LIFTER_INDEX == ID_VALVE_3_OFF_DELAY)
 	{
+		if(sp.ID_VALVE_3_OFF_DELAY == 0)
+		{
+			op.ID_VALVE_AIR_LIFTER_INDEX = ID_VALVE_4_ON_TIME;
+			
+			return;
+		}
+		
 		if(VALVE_3 == On)
 		{
 			VALVE_3 = Off;
@@ -299,6 +316,13 @@ void valve_4_handler(void)
 {
 	if(op.ID_VALVE_AIR_LIFTER_INDEX == ID_VALVE_4_ON_TIME)
 	{
+		if(sp.ID_VALVE_4_ON_TIME == 0)
+		{
+			op.ID_VALVE_AIR_LIFTER_INDEX = ID_VALVE_4_OFF_DELAY;
+			
+			return;
+		}
+		
 		if(VALVE_4 == Off)
 		{
 			VALVE_4 = On;
@@ -318,6 +342,13 @@ void valve_4_handler(void)
 	}
 	else if(op.ID_VALVE_AIR_LIFTER_INDEX == ID_VALVE_4_OFF_DELAY)
 	{
+		if(sp.ID_VALVE_4_OFF_DELAY == 0)
+		{
+			op.ID_VALVE_AIR_LIFTER_INDEX = ID_VALVE_5_ON_TIME;
+			
+			return;
+		}
+		
 		if(VALVE_4 == On)
 		{
 			VALVE_4 = Off;
@@ -339,6 +370,13 @@ void valve_5_handler(void)
 {
 	if(op.ID_VALVE_AIR_LIFTER_INDEX == ID_VALVE_5_ON_TIME)
 	{
+		if(sp.ID_VALVE_5_ON_TIME == 0)
+		{
+			op.ID_VALVE_AIR_LIFTER_INDEX = ID_VALVE_5_OFF_DELAY;
+			
+			return;
+		}
+		
 		if(VALVE_5 == Off)
 		{
 			VALVE_5 = On;
@@ -358,6 +396,13 @@ void valve_5_handler(void)
 	}
 	else if(op.ID_VALVE_AIR_LIFTER_INDEX == ID_VALVE_5_OFF_DELAY)
 	{
+		if(sp.ID_VALVE_5_OFF_DELAY == 0)
+		{
+			op.ID_VALVE_AIR_LIFTER_INDEX = ID_VALVE_6_ON_TIME;
+			
+			return;
+		}
+		
 		if(VALVE_5 == On)
 		{
 			VALVE_5 = Off;
@@ -379,6 +424,13 @@ void valve_6_handler(void)
 {
 	if(op.ID_VALVE_AIR_LIFTER_INDEX == ID_VALVE_6_ON_TIME)
 	{
+		if(sp.ID_VALVE_6_ON_TIME == 0)
+		{
+			op.ID_VALVE_AIR_LIFTER_INDEX = ID_VALVE_6_OFF_DELAY;
+			
+			return;
+		}
+		
 		if(VALVE_6 == Off)
 		{
 			VALVE_6 = On;
@@ -398,6 +450,13 @@ void valve_6_handler(void)
 	}
 	else if(op.ID_VALVE_AIR_LIFTER_INDEX == ID_VALVE_6_OFF_DELAY)
 	{
+		if(sp.ID_VALVE_6_OFF_DELAY == 0)
+		{
+			op.ID_VALVE_AIR_LIFTER_INDEX = ID_VALVE_3_ON_TIME;
+			
+			return;
+		}
+		
 		if(VALVE_6 == On)
 		{
 			VALVE_6 = Off;
