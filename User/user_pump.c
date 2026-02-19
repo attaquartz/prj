@@ -32,6 +32,20 @@ void pump_1_handler(void)
 				{
 					timer.ID_PUMP_1_ON_DELAY = 0;
 					
+					if(op.ID_VALVE_8 == On)
+					{
+						VALVE_8 = Off;
+						
+						op.ID_VALVE_8 = Off;
+					}
+					
+					if(op.ID_VALVE_7 == Off)
+					{
+						VALVE_7 = On;
+						
+						op.ID_VALVE_7 = On;
+					}
+					
 					PUMP_1 = On;
 					
 					op.ID_PUMP_1 = On;
@@ -150,7 +164,7 @@ void pump_3_scheduler(void)
 			
             if((((pump_3_day_counter - 1) % sp.ID_PUMP_3_INTERVAL) == 0) && (op.ID_PUMP_3 == Off))
             {
-				if((level_sensor[L_REUSE].state == Enable) && (op.ID_VALVE_7 == On))
+				if(level_sensor[L_REUSE].state == Enable)
 				{
 					uint8_t power_on_hour_24 = (pump_3_day_counter == 1) ? ((pump_3_power_on_hour == 0) ? 24 : pump_3_power_on_hour) : 0;
 					
@@ -212,6 +226,20 @@ void pump_3_handler(void)
         {
 			timer.ID_PUMP_3_ON_TIME = 0;
 			
+			if(op.ID_VALVE_7 == On)
+			{
+				VALVE_7 = Off;
+				
+				op.ID_VALVE_7 = Off;
+			}
+			
+			if(op.ID_VALVE_8 == Off)
+			{
+				VALVE_8 = On;
+				
+				op.ID_VALVE_8 = On;
+			}
+			
             PUMP_3 = On;
 			
             op.ID_PUMP_3 = On;
@@ -240,5 +268,17 @@ void pump_3_handler(void)
             op.ID_PUMP_3 = Off;
 		}
 	}
-	else{}
+	else
+	{
+		op.ID_PUMP_3_START_TIME_INDEX = 0;
+
+		if(op.ID_PUMP_3 == On)
+		{
+			timer.ID_PUMP_3_ON_TIME = 0;
+			
+			PUMP_3 = Off;
+			
+			op.ID_PUMP_3 = Off;
+		}
+	}
 }
