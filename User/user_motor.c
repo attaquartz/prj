@@ -526,7 +526,9 @@ void motor_7_reset(void)
 	heater_1_was_on = false;
 	op.ID_MOTOR_7 = Off;
 	timer.ID_MOTOR_7_OP_TIME = 0;
-	run_event(STATUS_MOTOR_7, op.ID_MOTOR_7);
+	
+	op.ID_MOTOR_7_OUTPUT = MOTOR_7_RPM(0);
+    PWM_ConfigOutputChannel(PWM1, 1, MOTOR_7_FREQ, op.ID_MOTOR_7_OUTPUT);
 }
 
 void motor_7_handler(void)
@@ -547,6 +549,24 @@ void motor_7_handler(void)
     }
 	
 	if((heater_1_was_on == true) && (op.ID_HEATER_1 == Off))
+	{
+		if(op.ID_MOTOR_7 == On)
+		{
+			if(++timer.ID_MOTOR_7_OP_TIME >= sp.ID_MOTOR_7_OP_TIME)
+			{
+				timer.ID_MOTOR_7_OP_TIME = 0;
+				
+				op.ID_MOTOR_7 = Off;
+				op.ID_MOTOR_7_OUTPUT = MOTOR_7_RPM(0);
+				
+				PWM_ConfigOutputChannel(PWM1, 1, MOTOR_7_FREQ, op.ID_MOTOR_7_OUTPUT);
+				
+				heater_1_was_on = false;
+			}
+		}
+	}
+	
+	if(alert_sensor[TEMP_1].state == Disable)
 	{
 		if(op.ID_MOTOR_7 == On)
 		{
