@@ -528,5 +528,16 @@ void water_pump_5_handler(void)
             op.ID_WATER_PUMP_5 = Off;
 		}
 	}
-	else{}
+	else
+	{
+		op.ID_WATER_PUMP_5_START_TIME_INDEX = 0;
+		op.ID_MOTOR_8_OFF_TIME_INDEX = 0; 
+		
+		if(op.ID_WATER_PUMP_5 == On)
+		{
+			WATER_PUMP_5 = Off;
+			
+			op.ID_WATER_PUMP_5 = Off;
+		}
+	}
 }
