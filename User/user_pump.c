@@ -3,7 +3,7 @@
 static uint8_t pump_3_schedule_hour_check = 0xff;
 static uint8_t pump_3_last_hour = 0xff;
 static uint8_t pump_3_power_on_hour = 0xff;
-static uint8_t pump_3_day_counter = 1;
+static uint32_t pump_3_day_counter = 1;
 static bool pump_3_day_changed = false;
 
 void pump_1_handler(void)

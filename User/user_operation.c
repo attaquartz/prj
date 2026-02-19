@@ -133,7 +133,7 @@ void input_interrupt_handler(void)
 		{
 			if((LEVEL_SENSOR(i) == Enable) && (level_sensor[i].state == Disable))
 			{
-				if(++level_sensor[i].tick >= LEVEL_SENSOR_DETECT_MS)
+				if(++level_sensor[i].tick >= sp.ID_HYSTERESIS_TIME)
 				{
 					level_sensor[i].flag = false;
 					level_sensor[i].state = Enable;
@@ -252,9 +252,7 @@ void emergency_handler(uint32_t state)
         timer.ID_MOTOR_6_OP_TIME = 0;
 		timer.ID_MOTOR_6_DIR_TIME = 0;
 
-        op.ID_MOTOR_7 = Off;
-        timer.ID_MOTOR_7_OP_TIME = 0;
-        run_event(STATUS_MOTOR_7, op.ID_MOTOR_7);
+        motor_7_reset();
 		
 		MOTOR_8 = Off;
         op.ID_MOTOR_8 = Off;

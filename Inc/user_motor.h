@@ -17,6 +17,7 @@ void motor_3_handler(void);
 void motor_4_handler(void);
 void motor_5_handler(void);
 void motor_6_handler(void);
+void motor_7_reset(void);
 void motor_7_handler(void);
 void motor_7_set(uint32_t state);
 void motor_8_scheduler_init(void);

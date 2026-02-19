@@ -2,8 +2,9 @@
 
 volatile uint32_t motor_7_fg_last_count = 0;
 volatile uint32_t motor_7_watchdog = 0;
+static bool heater_1_was_on = false;
 
-static uint8_t motor_8_day_counter = 1;
+static uint32_t motor_8_day_counter = 1;
 static uint8_t motor_8_last_hour = 0xff;
 static uint8_t motor_8_schedule_hour_check = 0xff;
 static bool motor_8_day_changed = false;
@@ -520,10 +521,16 @@ void motor_6_handler(void)
 	}
 }
 
+void motor_7_reset(void)
+{
+	heater_1_was_on = false;
+	op.ID_MOTOR_7 = Off;
+	timer.ID_MOTOR_7_OP_TIME = 0;
+	run_event(STATUS_MOTOR_7, op.ID_MOTOR_7);
+}
+
 void motor_7_handler(void)
 {
-	static bool heater_1_was_on = false;
-	
 	if((alert_sensor[TEMP_1].state == Enable) && (op.ID_MOTOR_7 == Off))
     {
 		timer.ID_MOTOR_7_OP_TIME = 0;

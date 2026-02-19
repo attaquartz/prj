@@ -3,19 +3,19 @@
 static uint8_t water_pump_1_schedule_hour_check = 0xff;
 static uint8_t water_pump_1_last_hour = 0xff;
 static uint8_t water_pump_1_power_on_hour = 0xff;
-static uint8_t water_pump_1_day_counter = 1;
+static uint32_t water_pump_1_day_counter = 1;
 static bool water_pump_1_day_changed = false;
 
 static uint8_t water_pump_2_schedule_hour_check = 0xff;
 static uint8_t water_pump_2_last_hour = 0xff;
 static uint8_t water_pump_2_power_on_hour = 0xff;
-static uint8_t water_pump_2_day_counter = 1;
+static uint32_t water_pump_2_day_counter = 1;
 static bool water_pump_2_day_changed = false;
 
 static uint8_t water_pump_5_schedule_hour_check = 0xff;
 static uint8_t water_pump_5_last_hour = 0xff;
 static uint8_t water_pump_5_power_on_hour = 0xff;
-static uint8_t water_pump_5_day_counter = 1;
+static uint32_t water_pump_5_day_counter = 1;
 static bool water_pump_5_day_changed = false;
 
 void water_pump_1_scheduler_init(void)

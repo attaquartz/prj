@@ -121,6 +121,8 @@ void ptc_fan_handler(void)
 			
 			op.ID_PTC_FAN = (PTC_FAN_6 << 5) | (PTC_FAN_5 << 4) | \
 							(PTC_FAN_4 << 3) | (PTC_FAN_3 << 2) | (PTC_FAN_2 << 1) | (PTC_FAN_1 << 0);
+			
+			timer.ID_PTC_FAN_OP_TIME = 0;
 		}
 		
 		motor_1_was_on = false;
