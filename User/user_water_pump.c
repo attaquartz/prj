@@ -52,6 +52,9 @@ void water_pump_1_scheduler(void)
 	
 	uint32_t arr_size = sizeof(water_pump_1_schedule) / sizeof(uint32_t);
 	
+	if(sp.ID_SLUDGE_DISCHARGE_INTERVAL == 0)
+		return;
+	
 	if((current_hour == 0) && (water_pump_1_last_hour == 23))
     {
         if(!water_pump_1_day_changed)
@@ -187,6 +190,9 @@ void water_pump_2_scheduler(void)
 	
 	uint32_t arr_size = sizeof(water_pump_2_schedule) / sizeof(uint32_t);
 	
+	if(sp.ID_SLUDGE_DISCHARGE_INTERVAL == 0)
+		return;
+	
 	if((current_hour == 0) && (water_pump_2_last_hour == 23))
     {
         if(!water_pump_2_day_changed)
@@ -270,6 +276,7 @@ void water_pump_2_handler(void)
 				
 				op.ID_WATER_PUMP_2 = Off;
 				op.ID_WATER_PUMP_2_START_TIME_INDEX = 0;
+				op.ID_MOTOR_8_OFF_TIME_INDEX = 0;
 			}
 		}
 	}
@@ -401,6 +408,9 @@ void water_pump_5_scheduler(void)
 	uint8_t current_hour_24 = (current_hour == 0) ? 24 : current_hour;
 	
 	uint32_t arr_size = sizeof(water_pump_5_schedule) / sizeof(uint32_t);
+	
+	if(sp.ID_WATER_PUMP_5_INTERVAL == 0)
+		return;
 	
 	if((current_hour == 0) && (water_pump_5_last_hour == 23))
     {

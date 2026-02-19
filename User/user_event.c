@@ -167,7 +167,7 @@ void event_handler(int32_t status, int32_t index)
 		{
 			uint32_t id = 0;
 			
-			if(index < 3)
+			if((index >= 1) && (index < 3))
 			{
 				id = index - 1;
 				environment_sensor_handler(id);

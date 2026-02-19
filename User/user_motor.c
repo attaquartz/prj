@@ -135,12 +135,12 @@ void motor_2_scheduler(void)
     static bool motor_1_was_on = false;
 	static bool actuator_1_was_on = false;
     
-    if(op.ID_MOTOR_1 == On)
+    if(op.ID_MOTOR_1_INDEX == On)
     {
         motor_1_was_on = true;
     }
     
-    if((motor_1_was_on == true) && (op.ID_MOTOR_1 == Off))
+    if((motor_1_was_on == true) && (op.ID_MOTOR_1_INDEX == Off))
     {
         if(op.ID_MOTOR_2_INDEX == 0)
         {
@@ -187,6 +187,26 @@ void motor_2_handler(void)
 			sp_ccw_time = sp.ID_MOTOR_2_OUT_CCW_TIME;
 		}
 		else{}
+			
+		if(sp_op_time == 0)
+		{
+			if(op.ID_MOTOR_2_INDEX == Dry)
+				op.ID_MOTOR_2_INDEX = Crush;
+			else if(op.ID_MOTOR_2_INDEX == Crush)
+				op.ID_MOTOR_2_INDEX = Out;
+			else if(op.ID_MOTOR_2_INDEX == Out)
+				op.ID_MOTOR_2_INDEX = 0;
+			else{}
+			
+			MOTOR_2 = Off;
+			MOTOR_2_DIR = Off;
+			
+			op.ID_MOTOR_2 = Stop;
+			op.ID_MOTOR_2_DIR = CW;
+			op.ID_MOTOR_2_DIR_INDEX = Stop;
+			
+			return;
+		}
 			
 		switch(op.ID_MOTOR_2_DIR)
 		{
@@ -450,8 +470,8 @@ void motor_6_handler(void)
 {
 	if((alert_sensor[TEMP_1].state == Enable) && (op.ID_MOTOR_6 == Off))
     {
-		timer.ID_MOTOR_4_OP_TIME = 0;
-		timer.ID_MOTOR_4_DIR_TIME = 0;
+		timer.ID_MOTOR_6_OP_TIME = 0;
+		timer.ID_MOTOR_6_DIR_TIME = 0;
 		
         MOTOR_6 = On;
 		
@@ -582,7 +602,7 @@ void motor_8_handler(void)
 	
 	uint32_t arr_size = sizeof(sludge_discharge_schedule) / sizeof(uint32_t);
 	
-	if(sp.ID_WATER_PUMP_5_INTERVAL == 0)
+	if(sp.ID_SLUDGE_DISCHARGE_INTERVAL == 0)
 		return;
 	
 	uint8_t current_hour = rtc.u32Hour;
@@ -636,7 +656,7 @@ void motor_8_handler(void)
         }
     }
 	
-	if((op.ID_WATER_PUMP_1 == Off) && (op.ID_MOTOR_8_OFF_TIME_INDEX == 0))
+	if((op.ID_WATER_PUMP_1 == Off) && (op.ID_WATER_PUMP_2 == Off) && (op.ID_MOTOR_8_OFF_TIME_INDEX == 0))
 	{
 		timer.ID_MOTOR_8_OFF_DELAY = 0;
 		

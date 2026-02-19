@@ -103,12 +103,12 @@ void ptc_fan_handler(void)
 	static bool motor_1_was_on = false;
 	static uint8_t motor_2_prev_index = 0; 
 	
-	if(op.ID_MOTOR_1 == On)
+	if(op.ID_MOTOR_1_INDEX == On)
     {
         motor_1_was_on = true;
     }
 	
-	if((motor_1_was_on == true) && (op.ID_MOTOR_1 == Off))
+	if((motor_1_was_on == true) && (op.ID_MOTOR_1_INDEX == Off))
 	{
 		if(op.ID_PTC_FAN == Off)
 		{

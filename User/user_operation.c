@@ -214,15 +214,19 @@ void emergency_handler(uint32_t state)
 		
 		MOTOR_1 = Off;
 		MOTOR_1_DIR = Stop;
-        op.ID_MOTOR_1 = Off;
+        op.ID_MOTOR_1 = Stop;
 		op.ID_MOTOR_1_DIR = Stop;
+		op.ID_MOTOR_1_INDEX = Off;
+		op.ID_MOTOR_1_DIR_INDEX = Stop;
         timer.ID_MOTOR_1_OP_TIME  = 0;
 		timer.ID_MOTOR_1_DIR_TIME  = 0;
 		
 		MOTOR_2 = Off;
 		MOTOR_2_DIR = Stop;
-        op.ID_MOTOR_2 = Off;
+        op.ID_MOTOR_2 = Stop;
 		op.ID_MOTOR_2_DIR = Stop;
+		op.ID_MOTOR_2_INDEX = 0;
+		op.ID_MOTOR_2_DIR_INDEX = Stop;
         timer.ID_MOTOR_2_OP_TIME = 0;
 		timer.ID_MOTOR_2_DIR_TIME  = 0;
 		
@@ -231,29 +235,30 @@ void emergency_handler(uint32_t state)
         timer.ID_MOTOR_3_OP_TIME = 0;
 		
 		MOTOR_4 = Off;
-        op.ID_MOTOR_4 = Off;
+        op.ID_MOTOR_4 = Stop;
 		op.ID_MOTOR_4_DIR = Stop;
         timer.ID_MOTOR_4_OP_TIME = 0;
 		timer.ID_MOTOR_4_DIR_TIME = 0;
 		
 		MOTOR_5 = Off;
-        op.ID_MOTOR_5 = Off;
+        op.ID_MOTOR_5 = Stop;
 		op.ID_MOTOR_5_DIR = Stop;
         timer.ID_MOTOR_5_OP_TIME = 0;
 		timer.ID_MOTOR_5_DIR_TIME = 0;
 
         MOTOR_6 = Off;
-        op.ID_MOTOR_6 = Off;
+        op.ID_MOTOR_6 = Stop;
 		op.ID_MOTOR_6_DIR = Stop;
         timer.ID_MOTOR_6_OP_TIME = 0;
 		timer.ID_MOTOR_6_DIR_TIME = 0;
 
-        op.ID_MOTOR_7     = Off;
-        timer.ID_MOTOR_7_OP_TIME  = 0;
+        op.ID_MOTOR_7 = Off;
+        timer.ID_MOTOR_7_OP_TIME = 0;
         run_event(STATUS_MOTOR_7, op.ID_MOTOR_7);
 		
 		MOTOR_8 = Off;
         op.ID_MOTOR_8 = Off;
+		op.ID_MOTOR_8_OFF_TIME_INDEX = 0;
         timer.ID_MOTOR_8_OFF_DELAY = 0;
 
         MOTOR_9 = Off;
@@ -269,10 +274,12 @@ void emergency_handler(uint32_t state)
 		
         PUMP_3 = Off;
 		op.ID_PUMP_3 = Off;
+		op.ID_PUMP_3_START_TIME_INDEX = 0;
 		timer.ID_PUMP_3_ON_TIME = 0;
 		
 		WATER_PUMP_1 = Off;
 		op.ID_WATER_PUMP_1 = Off;
+		op.ID_WATER_PUMP_1_START_TIME_INDEX = 0;
 		timer.ID_WATER_PUMP_1_ON_TIME = 0;
 		
         WATER_PUMP_2 = Off;
@@ -302,10 +309,12 @@ void emergency_handler(uint32_t state)
 		
 		VALVE_1 = Off;
 		op.ID_VALVE_1 = Off;
+		op.ID_VALVE_1_START_TIME_INDEX = 0;
 		timer.ID_VALVE_1_ON_TIME = 0;
 		
         VALVE_2 = Off;
 		op.ID_VALVE_2 = Off;
+		op.ID_VALVE_2_OP_INDEX = 0;
 		timer.ID_VALVE_2_ON_TIME = 0;
 		timer.ID_VALVE_2_ON_DELAY = 0;
 		
@@ -334,6 +343,8 @@ void emergency_handler(uint32_t state)
 		
         VALVE_8 = Off;
 		op.ID_VALVE_8 = Off;
+		
+		op.ID_VALVE_AIR_LIFTER_INDEX = 0;
 		
 		ACTUATOR_1 = Off;
 		op.ID_ACTUATOR_1 = Off;
@@ -379,6 +390,20 @@ void emergency_handler(uint32_t state)
 	}
 	else
 	{
+		/*set_operation_mode(ALL_Auto);
+	
+		op.ID_AERATION_2 = On;
+		op.ID_MOTOR_9 = On;
+		op.ID_FAN_3 = On;
+		op.ID_VALVE_AIR_LIFTER_INDEX = ID_VALVE_3_ON_TIME;
+		
+		valve_1_scheduler_init();
+		pump_3_scheduler_init();
+		water_pump_1_scheduler_init();
+		water_pump_2_scheduler_init();
+		water_pump_5_scheduler_init();
+		motor_8_scheduler_init();*/
+		
 		LAMP_EMERGENCY = Off;
 		op.ID_SIGNAL_INDICATOR &= ~(uint16_t)(1u << 4);
         op.ID_SWITCH &= ~BIT3;
