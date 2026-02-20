@@ -156,23 +156,27 @@ void valve_2_scheduler(void)
 {
     static bool water_pump_1_was_on = false;
     static bool water_pump_2_was_on = false;
-    
-    if((op.ID_WATER_PUMP_1 == On) && (op.ID_WATER_PUMP_2 == On))
-    {
-        water_pump_1_was_on = true;
-        water_pump_2_was_on = true;
-        
-        if(op.ID_WATER_PUMP_1_START_TIME_INDEX != 0)
+	
+	if(op.ID_WATER_PUMP_1 == On)
+	{
+		water_pump_1_was_on = true;
+		
+		if(op.ID_WATER_PUMP_1_START_TIME_INDEX != 0)
         {
             op.ID_VALVE_2_OP_INDEX = op.ID_WATER_PUMP_1_START_TIME_INDEX;
         }
-        else if(op.ID_WATER_PUMP_2_START_TIME_INDEX != 0)
+	}
+	
+	if(op.ID_WATER_PUMP_2 == On)
+	{
+		water_pump_2_was_on = true;
+		
+		if(op.ID_WATER_PUMP_2_START_TIME_INDEX != 0)
         {
             op.ID_VALVE_2_OP_INDEX = op.ID_WATER_PUMP_2_START_TIME_INDEX;
         }
-		else{}
-    }
-    
+	}
+	
     if((water_pump_1_was_on == true) && (water_pump_2_was_on == true) && (op.ID_WATER_PUMP_1 == Off) && (op.ID_WATER_PUMP_2 == Off))
     {
         if(op.ID_VALVE_2 == Off)
