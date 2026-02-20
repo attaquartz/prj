@@ -6,6 +6,9 @@ static uint8_t valve_1_power_on_hour = 0xff;
 static uint32_t valve_1_day_counter = 1;
 static bool valve_1_day_changed = false;
 
+static bool valve_2_scheduler_water_pump_1_was_on = false;
+static bool valve_2_scheduler_water_pump_2_was_on = false;
+
 void valve_1_scheduler_init(void)
 {
     valve_1_day_counter = 1;
@@ -152,14 +155,25 @@ void valve_1_handler(void)
 	}
 }
 
+void valve_2_reset(void)
+{
+	VALVE_2 = Off;
+	
+	op.ID_VALVE_2 = Off;
+	op.ID_VALVE_2_OP_INDEX = 0;
+	
+	timer.ID_VALVE_2_ON_TIME = 0;
+	timer.ID_VALVE_2_ON_DELAY = 0;
+	
+	valve_2_scheduler_water_pump_1_was_on = false;
+	valve_2_scheduler_water_pump_2_was_on = false;
+}
+
 void valve_2_scheduler(void)
 {
-    static bool water_pump_1_was_on = false;
-    static bool water_pump_2_was_on = false;
-	
 	if(op.ID_WATER_PUMP_1 == On)
 	{
-		water_pump_1_was_on = true;
+		valve_2_scheduler_water_pump_1_was_on = true;
 		
 		if(op.ID_WATER_PUMP_1_START_TIME_INDEX != 0)
         {
@@ -169,7 +183,7 @@ void valve_2_scheduler(void)
 	
 	if(op.ID_WATER_PUMP_2 == On)
 	{
-		water_pump_2_was_on = true;
+		valve_2_scheduler_water_pump_2_was_on = true;
 		
 		if(op.ID_WATER_PUMP_2_START_TIME_INDEX != 0)
         {
@@ -177,14 +191,14 @@ void valve_2_scheduler(void)
         }
 	}
 	
-    if((water_pump_1_was_on == true) && (water_pump_2_was_on == true) && (op.ID_WATER_PUMP_1 == Off) && (op.ID_WATER_PUMP_2 == Off))
+    if((valve_2_scheduler_water_pump_1_was_on == true) && (valve_2_scheduler_water_pump_2_was_on == true) && (op.ID_WATER_PUMP_1 == Off) && (op.ID_WATER_PUMP_2 == Off))
     {
         if(op.ID_VALVE_2 == Off)
         {
             if(op.ID_VALVE_2_OP_INDEX != 0)
             {
-                water_pump_1_was_on = false;
-                water_pump_2_was_on = false;
+                valve_2_scheduler_water_pump_1_was_on = false;
+                valve_2_scheduler_water_pump_2_was_on = false;
             }
         }
     }

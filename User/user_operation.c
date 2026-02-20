@@ -225,7 +225,7 @@ void emergency_handler(uint32_t state)
 		MOTOR_2_DIR = Stop;
         op.ID_MOTOR_2 = Stop;
 		op.ID_MOTOR_2_DIR = Stop;
-		op.ID_MOTOR_2_INDEX = 0;
+		op.ID_MOTOR_2_INDEX = Off;
 		op.ID_MOTOR_2_DIR_INDEX = Stop;
         timer.ID_MOTOR_2_OP_TIME = 0;
 		timer.ID_MOTOR_2_DIR_TIME  = 0;
@@ -312,11 +312,7 @@ void emergency_handler(uint32_t state)
 		op.ID_VALVE_1_START_TIME_INDEX = 0;
 		timer.ID_VALVE_1_ON_TIME = 0;
 		
-        VALVE_2 = Off;
-		op.ID_VALVE_2 = Off;
-		op.ID_VALVE_2_OP_INDEX = 0;
-		timer.ID_VALVE_2_ON_TIME = 0;
-		timer.ID_VALVE_2_ON_DELAY = 0;
+        valve_2_reset();
 		
         VALVE_3 = Off;
 		op.ID_VALVE_3 = Off;
