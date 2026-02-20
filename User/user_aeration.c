@@ -44,26 +44,24 @@ void aeration_3_handler(void)
 {
 	static bool pump_1_was_on = false;
 	
+	if(op.ID_PUMP_1 == On)
+    {
+        pump_1_was_on = true;
+    }
+	
 	if(op.ID_AERATION_3 == Off)
 	{
-		pump_1_was_on = false;
-		
 		if(level_sensor[L_FILTER].state == Enable)
         {
             AERATION_3 = On;
 			
             op.ID_AERATION_3 = On;
+			
+			timer.ID_AERATION_3_OFF_DELAY = 0;
         }
 	}
 	else
 	{
-		if(op.ID_PUMP_1 == On)
-        {
-            pump_1_was_on = true;
-			
-            timer.ID_AERATION_3_OFF_DELAY = 0;
-        }
-		
 		if((pump_1_was_on == true) && (op.ID_PUMP_1 == Off))
         {
 			if(sp.ID_AERATION_3_OFF_DELAY > 0)
@@ -88,10 +86,5 @@ void aeration_3_handler(void)
 				pump_1_was_on = false;
 			}
 		}
-		else if(pump_1_was_on == false)
-		{
-			timer.ID_AERATION_3_OFF_DELAY = 0;
-		}
-		else{}
 	}
 }

@@ -610,6 +610,7 @@ void motor_8_scheduler_init(void)
     
     MOTOR_8 = On;
     op.ID_MOTOR_8 = On;
+	op.ID_MOTOR_8_OFF_TIME_INDEX = 0;
 }
 
 void motor_8_handler(void)

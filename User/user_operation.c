@@ -414,6 +414,11 @@ void uv_lamp_handler(void)
 {
 	static bool pump_1_was_on = false;
 	
+	if(op.ID_PUMP_1 == On)
+    {
+        pump_1_was_on = true;
+    }
+	
 	if(op.ID_UV_LAMP == Off)
 	{
 		if(level_sensor[L_FILTER].state == Enable)
@@ -422,18 +427,11 @@ void uv_lamp_handler(void)
 			
 			op.ID_UV_LAMP = On;
 			
-			pump_1_was_on = false;
+			timer.ID_UV_LAMP_OFF_DELAY = 0;
 		}
 	}
 	else
 	{
-		if(op.ID_PUMP_1 == On)
-        {
-            pump_1_was_on = true;
-			
-            timer.ID_UV_LAMP_OFF_DELAY = 0;
-        }
-		
 		if((pump_1_was_on == true) && (op.ID_PUMP_1 == Off))
 		{
 			if(sp.ID_UV_LAMP_OFF_DELAY > 0)
@@ -445,6 +443,8 @@ void uv_lamp_handler(void)
 					LAMP_UV = Off;
 					
 					op.ID_UV_LAMP = Off;
+					
+					pump_1_was_on = false;
 				}
 			}
 			else
@@ -452,11 +452,9 @@ void uv_lamp_handler(void)
 				LAMP_UV = Off;
 				
 				op.ID_UV_LAMP = Off;
+				
+				pump_1_was_on = false;
 			}
-		}
-		else
-		{
-			timer.ID_UV_LAMP_OFF_DELAY = 0;
 		}
 	}
 }
@@ -571,6 +569,7 @@ void auto_handler(void)
 		aeration_2_handler();
 		
 		// BIO TANK
+		motor_8_handler();
 		water_pump_1_handler();
 		water_pump_2_handler();
 		water_pump_3_handler();
@@ -578,7 +577,6 @@ void auto_handler(void)
 		valve_4_handler();
 		valve_5_handler();
 		valve_6_handler();
-		motor_8_handler();
 		motor_9_handler();
 		water_pump_5_handler();
 	}
