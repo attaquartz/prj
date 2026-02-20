@@ -8,7 +8,7 @@ ct_t ct_sensor;
 
 void zero_crossing_handler(void)
 {
-	op.ID_SENSOR = (op.ID_SENSOR & ~(1 << ZERO_CROSSING)) | (alert_sensor[ZERO_CROSSING].state << ZERO_CROSSING);
+	op.ID_SENSOR = (op.ID_SENSOR & ~(1 << ZERO_CROSSING)) | (zero_crossing.state << ZERO_CROSSING);
 	
 	if(zero_crossing.state == Enable)
 	{
