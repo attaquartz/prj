@@ -33,9 +33,11 @@ void valve_1_scheduler(void)
 	sp.ID_VALVE_1_START_TIME_10,
 	};
 	
+	__disable_irq();
 	uint8_t current_hour = rtc.u32Hour;
     uint8_t current_minute = rtc.u32Minute;
     uint8_t current_second = rtc.u32Second;
+	__enable_irq();
 	uint8_t current_hour_24 = (current_hour == 0) ? 24 : current_hour;
 	
 	uint32_t arr_size = sizeof(valve_1_schedule) / sizeof(uint32_t);

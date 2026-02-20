@@ -282,6 +282,7 @@ void emergency_handler(uint32_t state)
 		
         WATER_PUMP_2 = Off;
 		op.ID_WATER_PUMP_2 = Off;
+		op.ID_WATER_PUMP_2_START_TIME_INDEX = 0;
 		timer.ID_WATER_PUMP_2_ON_TIME = 0;
 		
         WATER_PUMP_3 = Off;
@@ -293,6 +294,7 @@ void emergency_handler(uint32_t state)
 		
         WATER_PUMP_5 = Off;
 		op.ID_WATER_PUMP_5 = Off;
+		op.ID_WATER_PUMP_5_START_TIME_INDEX = 0;
 		timer.ID_WATER_PUMP_5_ON_TIME = 0;
 		
 		AERATION_1 = Off;

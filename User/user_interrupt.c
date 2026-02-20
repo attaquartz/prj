@@ -129,7 +129,7 @@ void GPCDEF_IRQHandler(void)
         }
         else
         {
-            diff = (0xFFFFFF - motor_7_fg_last_count) + motor_7_current_count + 1;
+            diff = (1000000 - motor_7_fg_last_count) + motor_7_current_count + 1;
         }
 		
 		motor_7_fg_last_count = motor_7_current_count;
