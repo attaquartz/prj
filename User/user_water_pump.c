@@ -322,7 +322,7 @@ void water_pump_3_handler(void)
 {
 	if(op.ID_WATER_PUMP_3 == Off)
 	{
-		if((level_sensor[L_FILTER].state == Disable) && (level_sensor[H_FILTER].state == Disable) && (level_sensor[L_S2].state == Enable) && (op.ID_VALVE_1 == Off))
+		if((level_sensor[L_FILTER].state == Disable) && (level_sensor[L_S2].state == Enable) && (op.ID_VALVE_1 == Off))
 		{
 			WATER_PUMP_3 = On;
 

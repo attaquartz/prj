@@ -632,7 +632,11 @@ void motor_8_handler(void)
 	if(sp.ID_SLUDGE_DISCHARGE_INTERVAL == 0)
 		return;
 	
+	__disable_irq();
 	uint8_t current_hour = rtc.u32Hour;
+    uint8_t current_minute = rtc.u32Minute;
+    uint8_t current_second = rtc.u32Second;
+	__enable_irq();
     
     if((current_hour == 0) && (motor_8_last_hour == 23))
     {
@@ -653,7 +657,7 @@ void motor_8_handler(void)
     {
          if(((motor_8_day_counter - 1) % sp.ID_SLUDGE_DISCHARGE_INTERVAL) == 0)
         {
-            uint32_t current_seconds = (rtc.u32Hour * 3600) + (rtc.u32Minute * 60) + rtc.u32Second;
+            uint32_t current_seconds = (current_hour * 3600) + (current_minute * 60) + current_second;
             
 			for(int i = 1; i < arr_size; i++)
             {
