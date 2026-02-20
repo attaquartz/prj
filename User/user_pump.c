@@ -267,7 +267,7 @@ void pump_3_handler(void)
 			
             op.ID_PUMP_3 = On;
         }
-		else
+		else if(op.ID_PUMP_3 == On)
         {
 			if(++timer.ID_PUMP_3_ON_TIME >= sp.ID_PUMP_3_ON_TIME)
 			{
@@ -279,6 +279,7 @@ void pump_3_handler(void)
 				op.ID_PUMP_3_START_TIME_INDEX = 0;
 			}
 		}
+		else{}
 	}
 	else if(op.ID_PUMP_3_START_TIME_INDEX == 0)
     {
