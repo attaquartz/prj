@@ -79,6 +79,13 @@ void pump_1_handler(void)
 	else
 	{
 		timer.ID_PUMP_1_ON_DELAY = 0;
+		
+		if(op.ID_PUMP_1 == On)
+		{
+			PUMP_1 = Off;
+			
+			op.ID_PUMP_1 = Off;
+		}
 	}
 }
 
