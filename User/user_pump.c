@@ -289,6 +289,7 @@ void pump_3_handler(void)
 			PUMP_3 = Off;
 			
             op.ID_PUMP_3 = Off;
+			op.ID_PUMP_3_START_TIME_INDEX = 0;
 		}
 	}
 	else
@@ -302,6 +303,7 @@ void pump_3_handler(void)
 			PUMP_3 = Off;
 			
 			op.ID_PUMP_3 = Off;
+			op.ID_PUMP_3_START_TIME_INDEX = 0;
 		}
 	}
 }

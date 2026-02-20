@@ -153,6 +153,7 @@ void water_pump_1_handler(void)
 			WATER_PUMP_1 = Off;
 			
             op.ID_WATER_PUMP_1 = Off;
+			op.ID_MOTOR_8_OFF_TIME_INDEX = 0; 
 		}
 	}
 	else
