@@ -687,7 +687,7 @@ void motor_8_handler(void)
         }
     }
 	
-	if((op.ID_WATER_PUMP_1 == Off) && (op.ID_WATER_PUMP_2 == Off) && (op.ID_MOTOR_8_OFF_TIME_INDEX == 0))
+	if((op.ID_WATER_PUMP_1 == Off) && (op.ID_MOTOR_8_OFF_TIME_INDEX == 0))
 	{
 		timer.ID_MOTOR_8_OFF_DELAY = 0;
 		
