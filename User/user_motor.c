@@ -206,6 +206,9 @@ void motor_2_handler(void)
 			op.ID_MOTOR_2_DIR = CW;
 			op.ID_MOTOR_2_DIR_INDEX = Stop;
 			
+			timer.ID_MOTOR_2_OP_TIME = 0;
+			timer.ID_MOTOR_2_DIR_TIME = 0;
+			
 			return;
 		}
 			
