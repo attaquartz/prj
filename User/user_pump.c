@@ -26,7 +26,7 @@ void pump_1_handler(void)
 	{
 		if(sp.ID_PUMP_1_ON_DELAY > 0)
 		{
-			if(op.ID_PUMP_1 == Off)
+			if((op.ID_PUMP_1 == Off) && (op.ID_PUMP_3 == Off))
 			{
 				if(++timer.ID_PUMP_1_ON_DELAY >= sp.ID_PUMP_1_ON_DELAY)
 				{
@@ -54,7 +54,7 @@ void pump_1_handler(void)
 		}
 		else
 		{
-			if(op.ID_PUMP_1 == Off)
+			if((op.ID_PUMP_1 == Off) && (op.ID_PUMP_3 == Off))
             {
 				if(op.ID_VALVE_8 == On)
 				{
@@ -245,7 +245,7 @@ void pump_3_handler(void)
 	
 	if((op.ID_PUMP_3_START_TIME_INDEX != 0) && (sp.ID_PUMP_3_ON_TIME > 0))
     {
-		if(op.ID_PUMP_3 == Off)
+		if((op.ID_PUMP_3 == Off) && (op.ID_PUMP_1 == Off))
         {
 			timer.ID_PUMP_3_ON_TIME = 0;
 			
