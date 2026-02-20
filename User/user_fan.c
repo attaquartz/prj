@@ -101,7 +101,6 @@ void fan_3_handler(void)
 void ptc_fan_handler(void)
 {
 	static bool motor_1_was_on = false;
-	static uint8_t motor_2_prev_index = 0; 
 	
 	if(op.ID_MOTOR_1_INDEX == On)
     {
@@ -160,6 +159,4 @@ void ptc_fan_handler(void)
 							(PTC_FAN_4 << 3) | (PTC_FAN_3 << 2) | (PTC_FAN_2 << 1) | (PTC_FAN_1 << 0);
 		}
 	}
-	
-	 motor_2_prev_index = op.ID_MOTOR_2_INDEX;
 }

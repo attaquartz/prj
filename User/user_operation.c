@@ -412,6 +412,8 @@ void emergency_handler(uint32_t state)
 
 void uv_lamp_handler(void)
 {
+	static bool pump_1_was_on = false;
+	
 	if(op.ID_UV_LAMP == Off)
 	{
 		if(level_sensor[L_FILTER].state == Enable)
@@ -419,11 +421,20 @@ void uv_lamp_handler(void)
 			LAMP_UV = On;
 			
 			op.ID_UV_LAMP = On;
+			
+			pump_1_was_on = false;
 		}
 	}
 	else
 	{
-		if(op.ID_PUMP_1 == Off)
+		if(op.ID_PUMP_1 == On)
+        {
+            pump_1_was_on = true;
+			
+            timer.ID_UV_LAMP_OFF_DELAY = 0;
+        }
+		
+		if((pump_1_was_on == true) && (op.ID_PUMP_1 == Off))
 		{
 			if(sp.ID_UV_LAMP_OFF_DELAY > 0)
 			{
