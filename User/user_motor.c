@@ -460,6 +460,7 @@ void motor_3_handler(void)
 void motor_4_reset(void)
 {
 	MOTOR_4 = Off;
+	MOTOR_4_DIR = Off;
 	
 	op.ID_MOTOR_4 = Stop;
 	op.ID_MOTOR_4_DIR = Stop;
@@ -476,6 +477,7 @@ void motor_4_handler(void)
 		timer.ID_MOTOR_4_DIR_TIME = 0;
 		
         MOTOR_4 = On;
+		MOTOR_4_DIR = Off;
 		
         op.ID_MOTOR_4 = CW;
 		op.ID_MOTOR_4_DIR = CW;
@@ -490,6 +492,7 @@ void motor_4_handler(void)
 				timer.ID_MOTOR_4_DIR_TIME = 0;
 				
 				MOTOR_4 = On;
+				MOTOR_4_DIR = On;
 				
 				op.ID_MOTOR_4 = CCW;
 				op.ID_MOTOR_4_DIR = CCW;
@@ -501,7 +504,8 @@ void motor_4_handler(void)
 			{
 				timer.ID_MOTOR_4_DIR_TIME = 0;
 				
-				MOTOR_4 = Off;
+				MOTOR_4 = On;
+				MOTOR_4_DIR = Off;
 				
 				op.ID_MOTOR_4 = CW;
 				op.ID_MOTOR_4_DIR = CW;
@@ -515,6 +519,7 @@ void motor_4_handler(void)
 			timer.ID_MOTOR_4_DIR_TIME = 0;
 			
 			MOTOR_4 = Off;
+			MOTOR_4_DIR = Off;
 			
 			op.ID_MOTOR_4 = Off;
 			op.ID_MOTOR_4_DIR = 0;
@@ -589,6 +594,7 @@ void motor_5_handler(void)
 void motor_6_reset(void)
 {
 	MOTOR_6 = Off;
+	MOTOR_6_DIR = Off;
 	
 	op.ID_MOTOR_6 = Stop;
 	op.ID_MOTOR_6_DIR = Stop;
@@ -605,6 +611,7 @@ void motor_6_handler(void)
 		timer.ID_MOTOR_6_DIR_TIME = 0;
 		
         MOTOR_6 = On;
+		MOTOR_6_DIR = Off;
 		
         op.ID_MOTOR_6 = CW;
 		op.ID_MOTOR_6_DIR = CW;
@@ -618,7 +625,8 @@ void motor_6_handler(void)
 			{
 				timer.ID_MOTOR_6_DIR_TIME = 0;
 				
-				MOTOR_6 = Off;
+				MOTOR_6 = On;
+				MOTOR_6_DIR = On;
 				
 				op.ID_MOTOR_6 = CCW;
 				op.ID_MOTOR_6_DIR = CCW;
@@ -631,6 +639,7 @@ void motor_6_handler(void)
 				timer.ID_MOTOR_6_DIR_TIME = 0;
 				
 				MOTOR_6 = On;
+				MOTOR_6_DIR = Off;
 				
 				op.ID_MOTOR_6 = CW;
 				op.ID_MOTOR_6_DIR = CW;
@@ -644,9 +653,10 @@ void motor_6_handler(void)
 			timer.ID_MOTOR_6_DIR_TIME = 0;
 			
 			MOTOR_6 = Off;
+			MOTOR_6_DIR = Off;
 			
 			op.ID_MOTOR_6 = Off;
-			op.ID_MOTOR_6_DIR = 0;
+			op.ID_MOTOR_6_DIR = Off;
 		}
 	}
 }
@@ -688,6 +698,8 @@ void motor_7_handler(void)
         op.ID_MOTOR_7_OUTPUT = MOTOR_7_RPM(sp.ID_MOTOR_7_SET_RPM);
 		
 		PWM_ConfigOutputChannel(PWM1, 1, MOTOR_7_FREQ, op.ID_MOTOR_7_OUTPUT);
+		
+		motor_7_handler_heater_1_was_on = false;
     }
 	
 	if(op.ID_HEATER_1 == On)
@@ -712,24 +724,6 @@ void motor_7_handler(void)
 			}
 		}
 	}
-	else if(alert_sensor[TEMP_1].state == Disable)
-	{
-		if(op.ID_MOTOR_7 == On)
-		{
-			if(++timer.ID_MOTOR_7_OP_TIME >= sp.ID_MOTOR_7_OP_TIME)
-			{
-				timer.ID_MOTOR_7_OP_TIME = 0;
-				
-				op.ID_MOTOR_7 = Off;
-				op.ID_MOTOR_7_OUTPUT = MOTOR_7_RPM(0);
-				
-				PWM_ConfigOutputChannel(PWM1, 1, MOTOR_7_FREQ, op.ID_MOTOR_7_OUTPUT);
-				
-				motor_7_handler_heater_1_was_on = false;
-			}
-		}
-	}
-	else{}
 }
 
 void motor_8_scheduler_init(void)
