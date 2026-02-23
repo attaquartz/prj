@@ -716,11 +716,6 @@ void motor_7_handler(void)
 	{
 		if(op.ID_MOTOR_7 == On)
 		{
-			if(motor_7_handler_heater_1_was_on == false)
-			{
-				timer.ID_MOTOR_7_OP_TIME = 0;
-			}
-		
 			if(++timer.ID_MOTOR_7_OP_TIME >= sp.ID_MOTOR_7_OP_TIME)
 			{
 				timer.ID_MOTOR_7_OP_TIME = 0;
