@@ -41,8 +41,10 @@
 #define MOTOR_2_DIR PB13
 #define MOTOR_3 PE11
 #define MOTOR_4 PE10
+#define MOTOR_4_DIR PE10
 #define MOTOR_5 PC11
 #define MOTOR_6 PE12
+#define MOTOR_6_DIR PE12
 #define MOTOR_7_PWM PWM1_CH1
 #define MOTOR_7_FG PC9
 #define MOTOR_8 PE8
