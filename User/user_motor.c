@@ -232,8 +232,6 @@ void motor_2_handler(void)
 	uint32_t sp_op_time = 0;
 	uint32_t sp_stop_time = 0, sp_cw_time = 0, sp_ccw_time = 0;
 	
-	motor_2_scheduler();
-	
 	if(motor_2_handler_skip_pending == true)
     {
         motor_2_handler_skip_pending = false;
@@ -254,6 +252,8 @@ void motor_2_handler(void)
 
         return;
     }
+	
+	motor_2_scheduler();
 	
 	if(op.ID_MOTOR_2_INDEX != 0)
 	{
@@ -716,6 +716,11 @@ void motor_7_handler(void)
 	{
 		if(op.ID_MOTOR_7 == On)
 		{
+			if(motor_7_handler_heater_1_was_on == false)
+			{
+				timer.ID_MOTOR_7_OP_TIME = 0;
+			}
+		
 			if(++timer.ID_MOTOR_7_OP_TIME >= sp.ID_MOTOR_7_OP_TIME)
 			{
 				timer.ID_MOTOR_7_OP_TIME = 0;
@@ -797,7 +802,9 @@ void motor_8_handler(void)
 	
 	if(op.ID_MOTOR_8 == On)
     {
-         if(((motor_8_day_counter - 1) % sp.ID_SLUDGE_DISCHARGE_INTERVAL) == 0)
+		uint32_t day_index = (motor_8_day_counter > 0) ? (motor_8_day_counter - 1) : 0;
+		
+		if((day_index % sp.ID_SLUDGE_DISCHARGE_INTERVAL) == 0)
         {
             uint32_t current_seconds = (current_hour * 3600) + (current_minute * 60) + current_second;
             
