@@ -260,5 +260,6 @@ enum
 };
 
 uint32_t getSysTick_ms(void);
+void Device_Init(void);
 
 #endif /* __USER_COMMON_H__ */

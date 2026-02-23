@@ -3,8 +3,11 @@
 
 #include "user_common.h"
 
+void aeration_1_reset(void);
 void aeration_1_handler(void);
+void aeration_2_reset(void);
 void aeration_2_handler(void);
+void aeration_3_reset(void);
 void aeration_3_handler(void);
 
 #endif

@@ -301,6 +301,7 @@ void input_interrupt_handler(void);
 
 void emergency_handler(uint32_t state);
 
+void uv_lamp_reset(void);
 void uv_lamp_handler(void);
 void temp_up_limit_time_handler(void);
 void set_operation_mode(uint16_t mode);
