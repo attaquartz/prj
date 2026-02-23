@@ -371,6 +371,7 @@ void temp_up_limit_time_handler(void)
 					timer.ID_MOTOR_4_DIR_TIME = 0;
 					
 					MOTOR_4 = Off;
+					MOTOR_4_DIR = Off;
 				
 					op.ID_MOTOR_4 = Off;
 					op.ID_MOTOR_4_DIR = 0;
@@ -393,6 +394,7 @@ void temp_up_limit_time_handler(void)
 					timer.ID_MOTOR_6_DIR_TIME = 0;
 					
 					MOTOR_6 = Off;
+					MOTOR_6_DIR = Off;
 				
 					op.ID_MOTOR_6 = Off;
 					op.ID_MOTOR_6_DIR = 0;
