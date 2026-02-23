@@ -12,6 +12,8 @@ static uint8_t water_pump_2_power_on_hour = 0xff;
 static uint32_t water_pump_2_day_counter = 1;
 static bool water_pump_2_day_changed = false;
 
+bool water_pump_4_off_condition = false;
+
 static uint8_t water_pump_5_schedule_hour_check = 0xff;
 static uint8_t water_pump_5_last_hour = 0xff;
 static uint8_t water_pump_5_power_on_hour = 0xff;
@@ -28,6 +30,16 @@ void water_pump_1_scheduler_init(void)
 	
 	op.ID_WATER_PUMP_1 = Off;
 	op.ID_WATER_PUMP_1_START_TIME_INDEX = 0;
+}
+
+void water_pump_1_reset(void)
+{
+	WATER_PUMP_1 = Off;
+	
+	op.ID_WATER_PUMP_1 = Off;
+	op.ID_WATER_PUMP_1_START_TIME_INDEX = 0;
+	
+	timer.ID_WATER_PUMP_1_ON_TIME = 0;
 }
 
 void water_pump_1_scheduler(void)
@@ -182,6 +194,16 @@ void water_pump_2_scheduler_init(void)
 	op.ID_WATER_PUMP_2_START_TIME_INDEX = 0;
 }
 
+void water_pump_2_reset(void)
+{
+	WATER_PUMP_2 = Off;
+	
+	op.ID_WATER_PUMP_2 = Off;
+	op.ID_WATER_PUMP_2_START_TIME_INDEX = 0;
+	
+	timer.ID_WATER_PUMP_2_ON_TIME = 0;
+}
+
 void water_pump_2_scheduler(void)
 {
 	const uint32_t water_pump_2_schedule[] = {0,
@@ -319,6 +341,13 @@ void water_pump_2_handler(void)
 	}
 }
 
+void water_pump_3_reset(void)
+{
+	WATER_PUMP_3 = Off;
+	
+	op.ID_WATER_PUMP_3 = Off;
+}
+
 void water_pump_3_handler(void)
 {
 	if(op.ID_WATER_PUMP_3 == Off)
@@ -341,21 +370,30 @@ void water_pump_3_handler(void)
 	}
 }
 
+void water_pump_4_reset(void)
+{
+	WATER_PUMP_4 = Off;
+	
+	op.ID_WATER_PUMP_4 = Off;
+	
+	timer.ID_WATER_PUMP_4_TIMEOUT = 0;
+	
+	water_pump_4_off_condition = false;
+}
+
 void water_pump_4_handler(void)
 {
-	bool off_condition = false;
-	
 	if(op.ID_WATER_PUMP_4 == On)
 	{
 		if((user_switch[FAUCET].state == Off) || (level_sensor[L_REUSE].state == Disable))
 		{
-			off_condition = true;
+			water_pump_4_off_condition = true;
 		}
 		else
 		{
 			if(++timer.ID_WATER_PUMP_4_TIMEOUT >= sp.ID_WATER_PUMP_4_TIMEOUT)
 			{
-				off_condition = true;
+				water_pump_4_off_condition = true;
 			}
 		}
 	}
@@ -373,7 +411,7 @@ void water_pump_4_handler(void)
 		}
 	}
 	
-	if(off_condition == true)
+	if(water_pump_4_off_condition == true)
 	{
 		timer.ID_WATER_PUMP_4_TIMEOUT = 0;
 		
@@ -396,6 +434,16 @@ void water_pump_5_scheduler_init(void)
 	
 	op.ID_WATER_PUMP_5 = Off;
 	op.ID_WATER_PUMP_5_START_TIME_INDEX = 0;
+}
+
+void water_pump_5_reset(void)
+{
+	WATER_PUMP_5 = Off;
+	
+	op.ID_WATER_PUMP_5 = Off;
+	op.ID_WATER_PUMP_5_START_TIME_INDEX = 0;
+	
+	timer.ID_WATER_PUMP_5_ON_TIME = 0;
 }
 
 void water_pump_5_scheduler(void)

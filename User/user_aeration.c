@@ -1,5 +1,14 @@
 #include "user_common.h"
 
+static bool aeration_3_handler_pump_1_was_on = false;
+
+void aeration_1_reset(void)
+{
+	AERATION_1 = Off;
+	
+	op.ID_AERATION_1 = Off;
+}
+
 void aeration_1_handler(void)
 {
 	if((op.ID_VALVE_3 == Off) && (op.ID_VALVE_4 == Off) && (op.ID_VALVE_5 == Off) && (op.ID_VALVE_6 == Off))
@@ -22,6 +31,13 @@ void aeration_1_handler(void)
 	}
 }
 
+void aeration_2_reset(void)
+{
+	AERATION_2 = Off;
+	
+	op.ID_AERATION_2 = Off;
+}
+
 void aeration_2_handler(void)
 {
 	if(op.ID_AERATION_2 == On)
@@ -40,13 +56,22 @@ void aeration_2_handler(void)
 	}
 }
 
+void aeration_3_reset(void)
+{
+	AERATION_3 = Off;
+	
+	op.ID_AERATION_3 = Off;
+	
+	timer.ID_AERATION_3_OFF_DELAY = 0;
+	
+	aeration_3_handler_pump_1_was_on = false;
+}
+
 void aeration_3_handler(void)
 {
-	static bool pump_1_was_on = false;
-	
 	if(op.ID_PUMP_1 == On)
     {
-        pump_1_was_on = true;
+        aeration_3_handler_pump_1_was_on = true;
     }
 	
 	if(op.ID_AERATION_3 == Off)
@@ -62,7 +87,7 @@ void aeration_3_handler(void)
 	}
 	else
 	{
-		if((pump_1_was_on == true) && (op.ID_PUMP_1 == Off))
+		if((aeration_3_handler_pump_1_was_on == true) && (op.ID_PUMP_1 == Off))
         {
 			if(sp.ID_AERATION_3_OFF_DELAY > 0)
 			{
@@ -74,7 +99,7 @@ void aeration_3_handler(void)
 					
 					op.ID_AERATION_3 = Off;
 					
-					pump_1_was_on = false;
+					aeration_3_handler_pump_1_was_on = false;
 				}
 			}
 			else
@@ -83,7 +108,7 @@ void aeration_3_handler(void)
 				
 				op.ID_AERATION_3 = Off;
 				
-				pump_1_was_on = false;
+				aeration_3_handler_pump_1_was_on = false;
 			}
 		}
 	}

@@ -1,10 +1,23 @@
 #include "user_common.h"
 
+static bool fan_1_handler_motor_1_was_off = true;
+static bool fan_2_handler_motor_1_was_off = true;
+static bool ptc_fan_handler_motor_1_was_on = false;
+
+void fan_1_reset(void)
+{
+	FAN_1 = Off;
+	
+	op.ID_FAN_1 = Off;
+	
+	timer.ID_FAN_1_OP_TIME = 0;
+	
+	fan_1_handler_motor_1_was_off = true;
+}
+
 void fan_1_handler(void)
 {
-	static bool motor_1_was_off = true;
-	
-	if((motor_1_was_off == true) && (op.ID_MOTOR_1_INDEX == On))
+	if((fan_1_handler_motor_1_was_off == true) && (op.ID_MOTOR_1_INDEX == On))
 	{
 		if(op.ID_FAN_1 == Off)
 		{
@@ -16,7 +29,7 @@ void fan_1_handler(void)
 		}
 	}
 	
-	motor_1_was_off = (op.ID_MOTOR_1_INDEX == Off);
+	fan_1_handler_motor_1_was_off = (op.ID_MOTOR_1_INDEX == Off);
 	
 	if(op.ID_FAN_1 == On)
 	{
@@ -40,11 +53,20 @@ void fan_1_handler(void)
 	}
 }
 
+void fan_2_reset(void)
+{
+	FAN_2 = Off;
+	
+	op.ID_FAN_2 = Off;
+	
+	timer.ID_FAN_2_OP_TIME = 0;
+	
+	fan_2_handler_motor_1_was_off = true;
+}
+
 void fan_2_handler(void)
 {
-	static bool motor_1_was_off = true;
-	
-	if((motor_1_was_off == true) && (op.ID_MOTOR_1_INDEX == On))
+	if((fan_2_handler_motor_1_was_off == true) && (op.ID_MOTOR_1_INDEX == On))
 	{
 		if(op.ID_FAN_2 == Off)
 		{
@@ -56,7 +78,7 @@ void fan_2_handler(void)
 		}
 	}
 	
-	motor_1_was_off = (op.ID_MOTOR_1_INDEX == Off);
+	fan_2_handler_motor_1_was_off = (op.ID_MOTOR_1_INDEX == Off);
 	
 	if(op.ID_FAN_2 == On)
 	{
@@ -80,6 +102,13 @@ void fan_2_handler(void)
 	}
 }
 
+void fan_3_reset(void)
+{
+	FAN_3 = Off;
+	
+	op.ID_FAN_3 = Off;
+}
+
 void fan_3_handler(void)
 {
 	if(op.ID_FAN_3 == Off)
@@ -98,16 +127,30 @@ void fan_3_handler(void)
 	}
 }
 
+void ptc_fan_reset(void)
+{
+	PTC_FAN_1 = Off;
+	PTC_FAN_2 = Off;
+	PTC_FAN_3 = Off;
+	PTC_FAN_4 = Off;
+	PTC_FAN_5 = Off;
+	PTC_FAN_6 = Off;
+	
+	op.ID_PTC_FAN = Off;
+	
+	timer.ID_PTC_FAN_OP_TIME = 0;
+	
+	ptc_fan_handler_motor_1_was_on = false;
+}
+
 void ptc_fan_handler(void)
 {
-	static bool motor_1_was_on = false;
-	
 	if(op.ID_MOTOR_1_INDEX == On)
     {
-        motor_1_was_on = true;
+        ptc_fan_handler_motor_1_was_on = true;
     }
 	
-	if((motor_1_was_on == true) && (op.ID_MOTOR_1_INDEX == Off))
+	if((ptc_fan_handler_motor_1_was_on == true) && (op.ID_MOTOR_1_INDEX == Off))
 	{
 		if(op.ID_PTC_FAN == Off)
 		{
@@ -124,7 +167,7 @@ void ptc_fan_handler(void)
 			timer.ID_PTC_FAN_OP_TIME = 0;
 		}
 		
-		motor_1_was_on = false;
+		ptc_fan_handler_motor_1_was_on = false;
 	}
 	
 	if(op.ID_PTC_FAN != Off)

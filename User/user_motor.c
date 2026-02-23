@@ -1,24 +1,46 @@
 #include "user_common.h"
 
+static bool motor_1_scheduler_valve_2_was_on = false;
+
+static bool motor_2_scheduler_motor_1_was_on = false;
+
+static uint8_t motor_3_handler_motor_2_prev_index = 0;
+
 volatile uint32_t motor_7_fg_last_count = 0;
 volatile uint32_t motor_7_watchdog = 0;
-static bool heater_1_was_on = false;
+static bool motor_7_handler_heater_1_was_on = false;
 
 static uint32_t motor_8_day_counter = 1;
 static uint8_t motor_8_last_hour = 0xff;
 static uint8_t motor_8_schedule_hour_check = 0xff;
 static bool motor_8_day_changed = false;
 
+static uint8_t actuator_1_handler_motor_2_prev_index = 0;
+
+void motor_1_reset(void)
+{
+	MOTOR_1 = Off;
+	MOTOR_1_DIR = Stop;
+	
+	op.ID_MOTOR_1 = Stop;
+	op.ID_MOTOR_1_DIR = Stop;
+	op.ID_MOTOR_1_INDEX = Off;
+	op.ID_MOTOR_1_DIR_INDEX = Stop;
+	
+	timer.ID_MOTOR_1_OP_TIME  = 0;
+	timer.ID_MOTOR_1_DIR_TIME  = 0;
+	
+	motor_1_scheduler_valve_2_was_on = false;
+}
+
 void motor_1_scheduler(void)
 {
-    static bool valve_2_was_on = false;
-	
     if(op.ID_VALVE_2 == On)
     {
-        valve_2_was_on = true;
+        motor_1_scheduler_valve_2_was_on = true;
     }
     
-    if((valve_2_was_on == true) && (op.ID_VALVE_2 == Off))
+    if((motor_1_scheduler_valve_2_was_on == true) && (op.ID_VALVE_2 == Off))
     {
         if(op.ID_MOTOR_1_INDEX == Off)
         {
@@ -30,7 +52,7 @@ void motor_1_scheduler(void)
             op.ID_MOTOR_1_DIR_INDEX = Stop;
         }
         
-        valve_2_was_on = false;
+        motor_1_scheduler_valve_2_was_on = false;
     }
 }
 
@@ -131,17 +153,30 @@ void motor_1_handler(void)
 	}
 }
 
+void motor_2_reset(void)
+{
+	MOTOR_2 = Off;
+	MOTOR_2_DIR = Stop;
+	
+	op.ID_MOTOR_2 = Stop;
+	op.ID_MOTOR_2_DIR = Stop;
+	op.ID_MOTOR_2_INDEX = Off;
+	op.ID_MOTOR_2_DIR_INDEX = Stop;
+	
+	timer.ID_MOTOR_2_OP_TIME = 0;
+	timer.ID_MOTOR_2_DIR_TIME  = 0;
+	
+	motor_2_scheduler_motor_1_was_on = false;
+}
+
 void motor_2_scheduler(void)
 {
-    static bool motor_1_was_on = false;
-	static bool actuator_1_was_on = false;
-    
     if(op.ID_MOTOR_1_INDEX == On)
     {
-        motor_1_was_on = true;
+        motor_2_scheduler_motor_1_was_on = true;
     }
     
-    if((motor_1_was_on == true) && (op.ID_MOTOR_1_INDEX == Off))
+    if((motor_2_scheduler_motor_1_was_on == true) && (op.ID_MOTOR_1_INDEX == Off))
     {
         if(op.ID_MOTOR_2_INDEX == 0)
         {
@@ -153,7 +188,7 @@ void motor_2_scheduler(void)
             op.ID_MOTOR_2_DIR_INDEX = Stop;   
         }
         
-        motor_1_was_on = false;
+        motor_2_scheduler_motor_1_was_on = false;
     }
 }
 
@@ -332,11 +367,20 @@ void motor_2_handler(void)
 	}
 }
 
+void motor_3_reset(void)
+{
+	MOTOR_3 = Off;
+	
+	op.ID_MOTOR_3 = Off;
+	
+	timer.ID_MOTOR_3_OP_TIME = 0;
+	
+	motor_3_handler_motor_2_prev_index = 0;
+}
+
 void motor_3_handler(void)
 {
-	static uint8_t motor_2_prev_index = 0;
-	
-	if((motor_2_prev_index == Crush) && (op.ID_MOTOR_2_INDEX == Out))
+	if((motor_3_handler_motor_2_prev_index == Crush) && (op.ID_MOTOR_2_INDEX == Out))
 	{
 		if(op.ID_MOTOR_3 == Off)
         {
@@ -360,7 +404,18 @@ void motor_3_handler(void)
 		}
 	}
 	
-	motor_2_prev_index = op.ID_MOTOR_2_INDEX;
+	motor_3_handler_motor_2_prev_index = op.ID_MOTOR_2_INDEX;
+}
+
+void motor_4_reset(void)
+{
+	MOTOR_4 = Off;
+	
+	op.ID_MOTOR_4 = Stop;
+	op.ID_MOTOR_4_DIR = Stop;
+	
+	timer.ID_MOTOR_4_OP_TIME = 0;
+	timer.ID_MOTOR_4_DIR_TIME = 0;
 }
 
 void motor_4_handler(void)
@@ -417,6 +472,17 @@ void motor_4_handler(void)
 	}
 }
 
+void motor_5_reset(void)
+{
+	MOTOR_5 = Off;
+	
+	op.ID_MOTOR_5 = Stop;
+	op.ID_MOTOR_5_DIR = Stop;
+	
+	timer.ID_MOTOR_5_OP_TIME = 0;
+	timer.ID_MOTOR_5_DIR_TIME = 0;
+}
+
 void motor_5_handler(void)
 {
 	if((alert_sensor[TEMP_1].state == Enable) && (op.ID_MOTOR_5_DIR == Off))
@@ -468,6 +534,17 @@ void motor_5_handler(void)
 			op.ID_MOTOR_5_DIR = 0;
 		}
 	}
+}
+
+void motor_6_reset(void)
+{
+	MOTOR_6 = Off;
+	
+	op.ID_MOTOR_6 = Stop;
+	op.ID_MOTOR_6_DIR = Stop;
+	
+	timer.ID_MOTOR_6_OP_TIME = 0;
+	timer.ID_MOTOR_6_DIR_TIME = 0;
 }
 
 void motor_6_handler(void)
@@ -526,66 +603,13 @@ void motor_6_handler(void)
 
 void motor_7_reset(void)
 {
-	heater_1_was_on = false;
 	op.ID_MOTOR_7 = Off;
 	timer.ID_MOTOR_7_OP_TIME = 0;
 	
 	op.ID_MOTOR_7_OUTPUT = MOTOR_7_RPM(0);
     PWM_ConfigOutputChannel(PWM1, 1, MOTOR_7_FREQ, op.ID_MOTOR_7_OUTPUT);
-}
-
-void motor_7_handler(void)
-{
-	if((alert_sensor[TEMP_1].state == Enable) && (op.ID_MOTOR_7 == Off))
-    {
-		timer.ID_MOTOR_7_OP_TIME = 0;
-		
-		op.ID_MOTOR_7 = On;
-        op.ID_MOTOR_7_OUTPUT = MOTOR_7_RPM(sp.ID_MOTOR_7_SET_RPM);
-		
-		PWM_ConfigOutputChannel(PWM1, 1, MOTOR_7_FREQ, op.ID_MOTOR_7_OUTPUT);
-    }
 	
-	if(op.ID_HEATER_1 == On)
-    {
-        heater_1_was_on = true;
-    }
-	
-	if((heater_1_was_on == true) && (op.ID_HEATER_1 == Off))
-	{
-		if(op.ID_MOTOR_7 == On)
-		{
-			if(++timer.ID_MOTOR_7_OP_TIME >= sp.ID_MOTOR_7_OP_TIME)
-			{
-				timer.ID_MOTOR_7_OP_TIME = 0;
-				
-				op.ID_MOTOR_7 = Off;
-				op.ID_MOTOR_7_OUTPUT = MOTOR_7_RPM(0);
-				
-				PWM_ConfigOutputChannel(PWM1, 1, MOTOR_7_FREQ, op.ID_MOTOR_7_OUTPUT);
-				
-				heater_1_was_on = false;
-			}
-		}
-	}
-	else if(alert_sensor[TEMP_1].state == Disable)
-	{
-		if(op.ID_MOTOR_7 == On)
-		{
-			if(++timer.ID_MOTOR_7_OP_TIME >= sp.ID_MOTOR_7_OP_TIME)
-			{
-				timer.ID_MOTOR_7_OP_TIME = 0;
-				
-				op.ID_MOTOR_7 = Off;
-				op.ID_MOTOR_7_OUTPUT = MOTOR_7_RPM(0);
-				
-				PWM_ConfigOutputChannel(PWM1, 1, MOTOR_7_FREQ, op.ID_MOTOR_7_OUTPUT);
-				
-				heater_1_was_on = false;
-			}
-		}
-	}
-	else{}
+	motor_7_handler_heater_1_was_on = false;
 }
 
 void motor_7_set(uint32_t state)
@@ -604,6 +628,60 @@ void motor_7_set(uint32_t state)
 	}
 }
 
+void motor_7_handler(void)
+{
+	if((alert_sensor[TEMP_1].state == Enable) && (op.ID_MOTOR_7 == Off))
+    {
+		timer.ID_MOTOR_7_OP_TIME = 0;
+		
+		op.ID_MOTOR_7 = On;
+        op.ID_MOTOR_7_OUTPUT = MOTOR_7_RPM(sp.ID_MOTOR_7_SET_RPM);
+		
+		PWM_ConfigOutputChannel(PWM1, 1, MOTOR_7_FREQ, op.ID_MOTOR_7_OUTPUT);
+    }
+	
+	if(op.ID_HEATER_1 == On)
+    {
+        motor_7_handler_heater_1_was_on = true;
+    }
+	
+	if((motor_7_handler_heater_1_was_on == true) && (op.ID_HEATER_1 == Off))
+	{
+		if(op.ID_MOTOR_7 == On)
+		{
+			if(++timer.ID_MOTOR_7_OP_TIME >= sp.ID_MOTOR_7_OP_TIME)
+			{
+				timer.ID_MOTOR_7_OP_TIME = 0;
+				
+				op.ID_MOTOR_7 = Off;
+				op.ID_MOTOR_7_OUTPUT = MOTOR_7_RPM(0);
+				
+				PWM_ConfigOutputChannel(PWM1, 1, MOTOR_7_FREQ, op.ID_MOTOR_7_OUTPUT);
+				
+				motor_7_handler_heater_1_was_on = false;
+			}
+		}
+	}
+	else if(alert_sensor[TEMP_1].state == Disable)
+	{
+		if(op.ID_MOTOR_7 == On)
+		{
+			if(++timer.ID_MOTOR_7_OP_TIME >= sp.ID_MOTOR_7_OP_TIME)
+			{
+				timer.ID_MOTOR_7_OP_TIME = 0;
+				
+				op.ID_MOTOR_7 = Off;
+				op.ID_MOTOR_7_OUTPUT = MOTOR_7_RPM(0);
+				
+				PWM_ConfigOutputChannel(PWM1, 1, MOTOR_7_FREQ, op.ID_MOTOR_7_OUTPUT);
+				
+				motor_7_handler_heater_1_was_on = false;
+			}
+		}
+	}
+	else{}
+}
+
 void motor_8_scheduler_init(void)
 {
     motor_8_day_counter = 1;
@@ -614,6 +692,16 @@ void motor_8_scheduler_init(void)
     MOTOR_8 = On;
     op.ID_MOTOR_8 = On;
 	op.ID_MOTOR_8_OFF_TIME_INDEX = 0;
+}
+
+void motor_8_reset(void)
+{
+	MOTOR_8 = Off;
+	
+	op.ID_MOTOR_8 = Off;
+	op.ID_MOTOR_8_OFF_TIME_INDEX = 0;
+	
+	timer.ID_MOTOR_8_OFF_DELAY = 0;
 }
 
 void motor_8_handler(void)
@@ -704,6 +792,13 @@ void motor_8_handler(void)
 	}
 }
 
+void motor_9_reset(void)
+{
+	MOTOR_9 = Off;
+	
+	op.ID_MOTOR_9 = Off;
+}
+
 void motor_9_handler(void)
 {
 	if(op.ID_MOTOR_9 == Off)
@@ -722,11 +817,20 @@ void motor_9_handler(void)
 	}
 }
 
+void actuator_1_reset(void)
+{
+	ACTUATOR_1 = Off;
+	
+	op.ID_ACTUATOR_1 = Off;
+	
+	timer.ID_ACTUATOR_1_OP_TIME = 0;
+	
+	actuator_1_handler_motor_2_prev_index = 0;
+}
+
 void actuator_1_handler(void)
 {
-	static uint8_t motor_2_prev_index = 0;
-	
-	if((motor_2_prev_index == Crush) && (op.ID_MOTOR_2_INDEX == Out))
+	if((actuator_1_handler_motor_2_prev_index == Crush) && (op.ID_MOTOR_2_INDEX == Out))
 	{
 		if(op.ID_ACTUATOR_1 == Off)
         {
@@ -750,5 +854,5 @@ void actuator_1_handler(void)
 		}
 	}
 	
-	motor_2_prev_index = op.ID_MOTOR_2_INDEX;
+	actuator_1_handler_motor_2_prev_index = op.ID_MOTOR_2_INDEX;
 }

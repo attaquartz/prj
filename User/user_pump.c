@@ -1,10 +1,22 @@
 #include "user_common.h"
 
+static bool pump_2_handler_heater_1_was_on = false;
+static uint8_t pump_2_handler_motor_2_prev_index = 0;
+
 static uint8_t pump_3_schedule_hour_check = 0xff;
 static uint8_t pump_3_last_hour = 0xff;
 static uint8_t pump_3_power_on_hour = 0xff;
 static uint32_t pump_3_day_counter = 1;
 static bool pump_3_day_changed = false;
+
+void pump_1_reset(void)
+{
+	PUMP_1 = Off;
+	
+	op.ID_PUMP_1 = Off;
+	
+	timer.ID_PUMP_1_ON_DELAY = 0;
+}
 
 void pump_1_handler(void)
 {
@@ -89,12 +101,21 @@ void pump_1_handler(void)
 	}
 }
 
+void pump_2_reset(void)
+{
+	PUMP_2 = Off;
+	
+	op.ID_PUMP_2 = Off;
+	
+	timer.ID_PUMP_2_OP_TIME = 0;
+	
+	pump_2_handler_heater_1_was_on = false;
+	pump_2_handler_motor_2_prev_index = 0;
+}
+
 void pump_2_handler(void)
 {
-	static bool heater_1_was_on = false;
-	static uint8_t motor_2_prev_index = 0;
-	
-	if((motor_2_prev_index == Crush) && (op.ID_MOTOR_2_INDEX == Out))
+	if((pump_2_handler_motor_2_prev_index == Crush) && (op.ID_MOTOR_2_INDEX == Out))
 	{
 		if(op.ID_PUMP_2 == Off)
         {
@@ -108,10 +129,10 @@ void pump_2_handler(void)
 	
 	if(op.ID_HEATER_1 == On)
     {
-        heater_1_was_on = true;
+        pump_2_handler_heater_1_was_on = true;
     }
 	
-	if((heater_1_was_on == true) && (op.ID_HEATER_1 == Off))
+	if((pump_2_handler_heater_1_was_on == true) && (op.ID_HEATER_1 == Off))
 	{
 		if(op.ID_PUMP_2 == On)
 		{
@@ -123,12 +144,12 @@ void pump_2_handler(void)
 				
 				op.ID_PUMP_2 = Off;
 				
-				heater_1_was_on = false;
+				pump_2_handler_heater_1_was_on = false;
 			}
 		}
 	}
 	
-	motor_2_prev_index = op.ID_MOTOR_2_INDEX;
+	pump_2_handler_motor_2_prev_index = op.ID_MOTOR_2_INDEX;
 }
 
 void pump_3_scheduler_init(void)
@@ -141,6 +162,16 @@ void pump_3_scheduler_init(void)
 	
 	op.ID_PUMP_3 = Off;
 	op.ID_PUMP_3_START_TIME_INDEX = 0;
+}
+
+void pump_3_reset(void)
+{
+	PUMP_3 = Off;
+	
+	op.ID_PUMP_3 = Off;
+	op.ID_PUMP_3_START_TIME_INDEX = 0;
+	
+	timer.ID_PUMP_3_ON_TIME = 0;
 }
 
 void pump_3_scheduler(void)

@@ -21,6 +21,16 @@ void valve_1_scheduler_init(void)
 	op.ID_VALVE_1_START_TIME_INDEX = 0;
 }
 
+void valve_1_reset(void)
+{
+	VALVE_1 = Off;
+	
+	op.ID_VALVE_1 = Off;
+	op.ID_VALVE_1_START_TIME_INDEX = 0;
+	
+	timer.ID_VALVE_1_ON_TIME = 0;
+}
+
 void valve_1_scheduler(void)
 {
 	const uint32_t valve_1_schedule[] = {0,
@@ -288,6 +298,17 @@ void valve_2_handler(void)
     }
 }
 
+void valve_3_reset(void)
+{
+	VALVE_3 = Off;
+	
+	op.ID_VALVE_3 = Off;
+	op.ID_VALVE_AIR_LIFTER_INDEX = 0;
+	
+	timer.ID_VALVE_3_ON_TIME = 0;
+	timer.ID_VALVE_3_OFF_DELAY = 0;
+}
+
 void valve_3_handler(void)
 {
 	if(op.ID_VALVE_AIR_LIFTER_INDEX == ID_VALVE_3_ON_TIME)
@@ -340,6 +361,17 @@ void valve_3_handler(void)
 		}
 	}
 	else{}
+}
+
+void valve_4_reset(void)
+{
+	VALVE_4 = Off;
+	
+	op.ID_VALVE_4 = Off;
+	op.ID_VALVE_AIR_LIFTER_INDEX = 0;
+	
+	timer.ID_VALVE_4_ON_TIME = 0;
+	timer.ID_VALVE_4_OFF_DELAY = 0;
 }
 
 void valve_4_handler(void)
@@ -396,6 +428,17 @@ void valve_4_handler(void)
 	else{}
 }
 
+void valve_5_reset(void)
+{
+	VALVE_5 = Off;
+	
+	op.ID_VALVE_5 = Off;
+	op.ID_VALVE_AIR_LIFTER_INDEX = 0;
+	
+	timer.ID_VALVE_5_ON_TIME = 0;
+	timer.ID_VALVE_5_OFF_DELAY = 0;
+}
+
 void valve_5_handler(void)
 {
 	if(op.ID_VALVE_AIR_LIFTER_INDEX == ID_VALVE_5_ON_TIME)
@@ -448,6 +491,17 @@ void valve_5_handler(void)
 		}
 	}
 	else{}
+}
+
+void valve_6_reset(void)
+{
+	VALVE_6 = Off;
+	
+	op.ID_VALVE_6 = Off;
+	op.ID_VALVE_AIR_LIFTER_INDEX = 0;
+	
+	timer.ID_VALVE_6_ON_TIME = 0;
+	timer.ID_VALVE_6_OFF_DELAY = 0;
 }
 
 void valve_6_handler(void)
@@ -504,6 +558,13 @@ void valve_6_handler(void)
 	else{}
 }
 
+void valve_7_reset(void)
+{
+	VALVE_7 = Off;
+	
+	op.ID_VALVE_7 = Off;
+}
+
 void valve_7_handler(void)
 {
 	if(op.ID_VALVE_7 == Off)
@@ -524,6 +585,13 @@ void valve_7_handler(void)
 			op.ID_VALVE_7 = Off;
 		}
 	}
+}
+
+void valve_8_reset(void)
+{
+	VALVE_8 = Off;
+	
+	op.ID_VALVE_8 = Off;
 }
 
 void valve_8_handler(void)

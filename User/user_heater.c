@@ -1,10 +1,23 @@
 #include "user_common.h"
 
+static uint8_t heater_1_handler_motor_2_prev_index = 0;
+
+void heater_1_reset(void)
+{
+	HEATER_1 = Off;
+	
+	op.ID_HEATER_1 = Off;
+	
+	timer.ID_HEATER_1_OP_TIME = 0;
+	timer.ID_HEATER_1_TEMP_UP_LIMIT_TIME = 0;
+	timer.ID_HEATER_1_TEMP_UP_LIMIT_TIME_2 = 0;
+	
+	heater_1_handler_motor_2_prev_index = 0;
+}
+
 void heater_1_handler(void)
 {
-	static uint8_t motor_2_prev_index = 0;
-	
-	if((motor_2_prev_index == Crush) && (op.ID_MOTOR_2_INDEX == Out))
+	if((heater_1_handler_motor_2_prev_index == Crush) && (op.ID_MOTOR_2_INDEX == Out))
 	{
 		if(op.ID_HEATER_1 == Off)
         {
@@ -52,7 +65,16 @@ void heater_1_handler(void)
 		}
 	}
 	
-	motor_2_prev_index = op.ID_MOTOR_2_INDEX;
+	heater_1_handler_motor_2_prev_index = op.ID_MOTOR_2_INDEX;
+}
+
+void radiator_reset(void)
+{
+	RADIATOR = Off;
+	
+	op.ID_RADIATOR = Off;
+	
+	timer.ID_RADIATOR_DELAY_TIME = 0;
 }
 
 void radiator_handler(void)

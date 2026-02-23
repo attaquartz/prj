@@ -5,6 +5,8 @@ S_RTC_TIME_DATA_T rtc;
 operation_parameter_t op;
 system_parameter_t sp;
 
+static bool uv_lamp_handler_pump_1_was_on = false;
+
 /* CRC16 implementation acording to CCITT standards */
 const unsigned short crc16tab[256] = {
 	0x0000,0x1021,0x2042,0x3063,0x4084,0x50a5,0x60c6,0x70e7,
@@ -212,173 +214,50 @@ void emergency_handler(uint32_t state)
 	{
 		set_operation_mode(ALL_Manual);
 		
-		MOTOR_1 = Off;
-		MOTOR_1_DIR = Stop;
-        op.ID_MOTOR_1 = Stop;
-		op.ID_MOTOR_1_DIR = Stop;
-		op.ID_MOTOR_1_INDEX = Off;
-		op.ID_MOTOR_1_DIR_INDEX = Stop;
-        timer.ID_MOTOR_1_OP_TIME  = 0;
-		timer.ID_MOTOR_1_DIR_TIME  = 0;
-		
-		MOTOR_2 = Off;
-		MOTOR_2_DIR = Stop;
-        op.ID_MOTOR_2 = Stop;
-		op.ID_MOTOR_2_DIR = Stop;
-		op.ID_MOTOR_2_INDEX = Off;
-		op.ID_MOTOR_2_DIR_INDEX = Stop;
-        timer.ID_MOTOR_2_OP_TIME = 0;
-		timer.ID_MOTOR_2_DIR_TIME  = 0;
-		
-		MOTOR_3 = Off;
-        op.ID_MOTOR_3 = Off;
-        timer.ID_MOTOR_3_OP_TIME = 0;
-		
-		MOTOR_4 = Off;
-        op.ID_MOTOR_4 = Stop;
-		op.ID_MOTOR_4_DIR = Stop;
-        timer.ID_MOTOR_4_OP_TIME = 0;
-		timer.ID_MOTOR_4_DIR_TIME = 0;
-		
-		MOTOR_5 = Off;
-        op.ID_MOTOR_5 = Stop;
-		op.ID_MOTOR_5_DIR = Stop;
-        timer.ID_MOTOR_5_OP_TIME = 0;
-		timer.ID_MOTOR_5_DIR_TIME = 0;
-
-        MOTOR_6 = Off;
-        op.ID_MOTOR_6 = Stop;
-		op.ID_MOTOR_6_DIR = Stop;
-        timer.ID_MOTOR_6_OP_TIME = 0;
-		timer.ID_MOTOR_6_DIR_TIME = 0;
-
+		motor_1_reset();
+		motor_2_reset();
+		motor_3_reset();
+		motor_4_reset();
+		motor_5_reset();
+		motor_6_reset();
         motor_7_reset();
+		motor_8_reset();
+		motor_9_reset();
 		
-		MOTOR_8 = Off;
-        op.ID_MOTOR_8 = Off;
-		op.ID_MOTOR_8_OFF_TIME_INDEX = 0;
-        timer.ID_MOTOR_8_OFF_DELAY = 0;
-
-        MOTOR_9 = Off;
-        op.ID_MOTOR_9 = Off;
+        actuator_1_reset();
 		
-		PUMP_1 = Off;
-		op.ID_PUMP_1 = Off;
-		timer.ID_PUMP_1_ON_DELAY = 0;
+		pump_1_reset();
+        pump_2_reset();
+		pump_3_reset();
 		
-        PUMP_2 = Off;
-		op.ID_PUMP_2 = Off;
-		timer.ID_PUMP_2_OP_TIME = 0;
+		water_pump_1_reset();
+		water_pump_2_reset();
+		water_pump_3_reset();
+		water_pump_4_reset();
+		water_pump_5_reset();
 		
-        PUMP_3 = Off;
-		op.ID_PUMP_3 = Off;
-		op.ID_PUMP_3_START_TIME_INDEX = 0;
-		timer.ID_PUMP_3_ON_TIME = 0;
+		aeration_1_reset();
+		aeration_2_reset();
+        aeration_3_reset();
 		
-		WATER_PUMP_1 = Off;
-		op.ID_WATER_PUMP_1 = Off;
-		op.ID_WATER_PUMP_1_START_TIME_INDEX = 0;
-		timer.ID_WATER_PUMP_1_ON_TIME = 0;
-		
-        WATER_PUMP_2 = Off;
-		op.ID_WATER_PUMP_2 = Off;
-		op.ID_WATER_PUMP_2_START_TIME_INDEX = 0;
-		timer.ID_WATER_PUMP_2_ON_TIME = 0;
-		
-        WATER_PUMP_3 = Off;
-		op.ID_WATER_PUMP_3 = Off;
-		
-        WATER_PUMP_4 = Off;
-		op.ID_WATER_PUMP_4 = Off;
-		timer.ID_WATER_PUMP_4_TIMEOUT = 0;
-		
-        WATER_PUMP_5 = Off;
-		op.ID_WATER_PUMP_5 = Off;
-		op.ID_WATER_PUMP_5_START_TIME_INDEX = 0;
-		timer.ID_WATER_PUMP_5_ON_TIME = 0;
-		
-		AERATION_1 = Off;
-		op.ID_AERATION_1 = Off;
-		
-        AERATION_2 = Off;
-		op.ID_AERATION_2 = Off;
-		
-        AERATION_3 = Off;
-		op.ID_AERATION_3 = Off;
-		timer.ID_AERATION_3_OFF_DELAY = 0;
-		
-		VALVE_1 = Off;
-		op.ID_VALVE_1 = Off;
-		op.ID_VALVE_1_START_TIME_INDEX = 0;
-		timer.ID_VALVE_1_ON_TIME = 0;
-		
+		valve_1_reset();
         valve_2_reset();
+        valve_3_reset();
+        valve_4_reset();
+        valve_5_reset();
+        valve_6_reset();
+        valve_7_reset();
+		valve_8_reset();
 		
-        VALVE_3 = Off;
-		op.ID_VALVE_3 = Off;
-		timer.ID_VALVE_3_ON_TIME = 0;
-		timer.ID_VALVE_3_OFF_DELAY = 0;
+		fan_1_reset();
+		fan_2_reset();
+		fan_3_reset();
+		ptc_fan_reset();
 		
-        VALVE_4 = Off;
-		op.ID_VALVE_4 = Off;
-		timer.ID_VALVE_4_ON_TIME = 0;
-		timer.ID_VALVE_4_OFF_DELAY = 0;
+		heater_1_reset();
+		radiator_reset();
 		
-        VALVE_5 = Off;
-		op.ID_VALVE_5 = Off;
-		timer.ID_VALVE_5_ON_TIME = 0;
-		timer.ID_VALVE_5_OFF_DELAY = 0;
-		
-        VALVE_6 = Off;
-		op.ID_VALVE_6 = Off;
-		timer.ID_VALVE_6_ON_TIME = 0;
-		timer.ID_VALVE_6_OFF_DELAY = 0;
-		
-        VALVE_7 = Off;
-		op.ID_VALVE_7 = Off;
-		
-        VALVE_8 = Off;
-		op.ID_VALVE_8 = Off;
-		
-		op.ID_VALVE_AIR_LIFTER_INDEX = 0;
-		
-		ACTUATOR_1 = Off;
-		op.ID_ACTUATOR_1 = Off;
-		timer.ID_ACTUATOR_1_OP_TIME = 0;
-		
-		FAN_1 = Off;
-		op.ID_FAN_1 = Off;
-		timer.ID_FAN_1_OP_TIME = 0;
-		
-        FAN_2 = Off;
-		op.ID_FAN_2 = Off;
-		timer.ID_FAN_2_OP_TIME = 0;
-		
-        FAN_3 = Off;
-		op.ID_FAN_3 = Off;
-		
-		PTC_FAN_1 = Off;
-        PTC_FAN_2 = Off;
-        PTC_FAN_3 = Off;
-        PTC_FAN_4 = Off;
-        PTC_FAN_5 = Off;
-        PTC_FAN_6 = Off;
-        op.ID_PTC_FAN = Off;
-		timer.ID_PTC_FAN_OP_TIME = 0;
-		
-		HEATER_1 = Off;
-		op.ID_HEATER_1 = Off;
-        timer.ID_HEATER_1_OP_TIME = 0;
-        timer.ID_HEATER_1_TEMP_UP_LIMIT_TIME = 0;
-        timer.ID_HEATER_1_TEMP_UP_LIMIT_TIME_2 = 0;
-		
-		RADIATOR = Off;
-		op.ID_RADIATOR = Off;
-		timer.ID_RADIATOR_DELAY_TIME = 0;
-		
-		LAMP_UV = Off;
-		op.ID_UV_LAMP = Off;
-		timer.ID_UV_LAMP_OFF_DELAY = 0;
+		uv_lamp_reset();
 		
 		LAMP_EMERGENCY = On;
         op.ID_SIGNAL_INDICATOR |= (uint16_t)(1u << 4);
@@ -386,19 +265,7 @@ void emergency_handler(uint32_t state)
 	}
 	else
 	{
-		/*set_operation_mode(ALL_Auto);
-	
-		op.ID_AERATION_2 = On;
-		op.ID_MOTOR_9 = On;
-		op.ID_FAN_3 = On;
-		op.ID_VALVE_AIR_LIFTER_INDEX = ID_VALVE_3_ON_TIME;
-		
-		valve_1_scheduler_init();
-		pump_3_scheduler_init();
-		water_pump_1_scheduler_init();
-		water_pump_2_scheduler_init();
-		water_pump_5_scheduler_init();
-		motor_8_scheduler_init();*/
+		//Device_Init();
 		
 		LAMP_EMERGENCY = Off;
 		op.ID_SIGNAL_INDICATOR &= ~(uint16_t)(1u << 4);
@@ -406,13 +273,22 @@ void emergency_handler(uint32_t state)
 	}
 }
 
+void uv_lamp_reset(void)
+{
+	LAMP_UV = Off;
+	
+	op.ID_UV_LAMP = Off;
+	
+	timer.ID_UV_LAMP_OFF_DELAY = 0;
+	
+	uv_lamp_handler_pump_1_was_on = false;
+}
+
 void uv_lamp_handler(void)
 {
-	static bool pump_1_was_on = false;
-	
 	if(op.ID_PUMP_1 == On)
     {
-        pump_1_was_on = true;
+        uv_lamp_handler_pump_1_was_on = true;
     }
 	
 	if(op.ID_UV_LAMP == Off)
@@ -428,7 +304,7 @@ void uv_lamp_handler(void)
 	}
 	else
 	{
-		if((pump_1_was_on == true) && (op.ID_PUMP_1 == Off))
+		if((uv_lamp_handler_pump_1_was_on == true) && (op.ID_PUMP_1 == Off))
 		{
 			if(sp.ID_UV_LAMP_OFF_DELAY > 0)
 			{
@@ -440,7 +316,7 @@ void uv_lamp_handler(void)
 					
 					op.ID_UV_LAMP = Off;
 					
-					pump_1_was_on = false;
+					uv_lamp_handler_pump_1_was_on = false;
 				}
 			}
 			else
@@ -449,7 +325,7 @@ void uv_lamp_handler(void)
 				
 				op.ID_UV_LAMP = Off;
 				
-				pump_1_was_on = false;
+				uv_lamp_handler_pump_1_was_on = false;
 			}
 		}
 	}
@@ -550,7 +426,6 @@ void set_operation_mode(uint16_t mode)
 
 void auto_handler(void)
 {
-	
 	if((op.ID_DEV_OPERATION & WP_Status) != Manual)
 	{
 		// FILTER & REUSE
