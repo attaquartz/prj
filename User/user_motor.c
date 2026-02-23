@@ -260,11 +260,20 @@ void motor_2_handler(void)
 		if(sp_op_time == 0)
 		{
 			if(op.ID_MOTOR_2_INDEX == Dry)
+			{
 				op.ID_MOTOR_2_INDEX = Crush;
+				actuator_1_handler_motor_2_prev_index = Dry;
+			}
 			else if(op.ID_MOTOR_2_INDEX == Crush)
+			{
 				op.ID_MOTOR_2_INDEX = Out;
+				actuator_1_handler_motor_2_prev_index = Crush;
+			}
 			else if(op.ID_MOTOR_2_INDEX == Out)
+			{
 				op.ID_MOTOR_2_INDEX = 0;
+				actuator_1_handler_motor_2_prev_index = 0;
+			}
 			else{}
 			
 			MOTOR_2 = Off;
