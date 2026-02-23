@@ -4,6 +4,7 @@ static bool motor_1_scheduler_valve_2_was_on = false;
 static bool motor_1_scheduler_valve_2_was_last = false; 
 
 static bool motor_2_scheduler_motor_1_was_on = false;
+static bool motor_2_handler_skip_pending = false;
 
 static uint8_t motor_3_handler_motor_2_prev_index = 0;
 
@@ -200,6 +201,7 @@ void motor_2_reset(void)
 	timer.ID_MOTOR_2_DIR_TIME  = 0;
 	
 	motor_2_scheduler_motor_1_was_on = false;
+	motor_2_handler_skip_pending = false;
 }
 
 void motor_2_scheduler(void)
@@ -232,6 +234,27 @@ void motor_2_handler(void)
 	
 	motor_2_scheduler();
 	
+	if(motor_2_handler_skip_pending == true)
+    {
+        motor_2_handler_skip_pending = false;
+
+        if(op.ID_MOTOR_2_INDEX == Dry)
+        {
+            op.ID_MOTOR_2_INDEX = Crush;
+        }
+        else if(op.ID_MOTOR_2_INDEX == Crush)
+        {
+            op.ID_MOTOR_2_INDEX = Out;
+        }
+        else if(op.ID_MOTOR_2_INDEX == Out)
+        {
+            op.ID_MOTOR_2_INDEX = 0;
+        }
+        else{}
+
+        return;
+    }
+	
 	if(op.ID_MOTOR_2_INDEX != 0)
 	{
 		if(op.ID_MOTOR_2_INDEX == Dry)
@@ -259,23 +282,6 @@ void motor_2_handler(void)
 			
 		if(sp_op_time == 0)
 		{
-			if(op.ID_MOTOR_2_INDEX == Dry)
-			{
-				op.ID_MOTOR_2_INDEX = Crush;
-				actuator_1_handler_motor_2_prev_index = Dry;
-			}
-			else if(op.ID_MOTOR_2_INDEX == Crush)
-			{
-				op.ID_MOTOR_2_INDEX = Out;
-				actuator_1_handler_motor_2_prev_index = Crush;
-			}
-			else if(op.ID_MOTOR_2_INDEX == Out)
-			{
-				op.ID_MOTOR_2_INDEX = 0;
-				actuator_1_handler_motor_2_prev_index = 0;
-			}
-			else{}
-			
 			MOTOR_2 = Off;
 			MOTOR_2_DIR = Off;
 			
@@ -285,6 +291,8 @@ void motor_2_handler(void)
 			
 			timer.ID_MOTOR_2_OP_TIME = 0;
 			timer.ID_MOTOR_2_DIR_TIME = 0;
+			
+			motor_2_handler_skip_pending = true;
 			
 			return;
 		}
@@ -811,11 +819,14 @@ void motor_8_handler(void)
                 
                 if((current_seconds >= off_time_seconds) && (current_seconds < off_time_seconds + 9))
                 {
-                    MOTOR_8 = Off;
-                    op.ID_MOTOR_8 = Off;
-					op.ID_MOTOR_8_OFF_TIME_INDEX = i;
-                    
-                    return;
+					if(op.ID_MOTOR_8_OFF_TIME_INDEX == 0)
+					{
+						MOTOR_8 = Off;
+						op.ID_MOTOR_8 = Off;
+						op.ID_MOTOR_8_OFF_TIME_INDEX = i;
+						
+						return;
+					}
                 }
             }
         }
