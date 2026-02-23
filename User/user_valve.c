@@ -154,6 +154,8 @@ void valve_1_handler(void)
 	}
 	else
 	{
+		timer.ID_VALVE_1_ON_TIME = 0;
+		
 		op.ID_VALVE_1_START_TIME_INDEX = 0;
 
 		if(op.ID_VALVE_1 == On)

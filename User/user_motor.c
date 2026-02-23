@@ -1,6 +1,7 @@
 #include "user_common.h"
 
 static bool motor_1_scheduler_valve_2_was_on = false;
+static bool motor_1_scheduler_valve_2_was_last = false; 
 
 static bool motor_2_scheduler_motor_1_was_on = false;
 
@@ -31,28 +32,60 @@ void motor_1_reset(void)
 	timer.ID_MOTOR_1_DIR_TIME  = 0;
 	
 	motor_1_scheduler_valve_2_was_on = false;
+	motor_1_scheduler_valve_2_was_last = false; 
 }
 
 void motor_1_scheduler(void)
 {
+	const uint32_t sludge_discharge_schedule[] = {0,
+    sp.ID_SLUDGE_DISCHARGE_START_TIME_1,
+    sp.ID_SLUDGE_DISCHARGE_START_TIME_2,
+    sp.ID_SLUDGE_DISCHARGE_START_TIME_3,
+	sp.ID_SLUDGE_DISCHARGE_START_TIME_4,
+	sp.ID_SLUDGE_DISCHARGE_START_TIME_5,
+	sp.ID_SLUDGE_DISCHARGE_START_TIME_6,
+	sp.ID_SLUDGE_DISCHARGE_START_TIME_7,
+	sp.ID_SLUDGE_DISCHARGE_START_TIME_8,
+	sp.ID_SLUDGE_DISCHARGE_START_TIME_9,
+	sp.ID_SLUDGE_DISCHARGE_START_TIME_10,
+	};
+	
+	uint32_t arr_size = sizeof(sludge_discharge_schedule) / sizeof(uint32_t);
+	uint16_t last_index = 0;
+	
     if(op.ID_VALVE_2 == On)
     {
+		if(motor_1_scheduler_valve_2_was_on == false)
+		{
+			for(int i = 1; i < arr_size; i++)
+			{
+				if(sludge_discharge_schedule[i] != 0)
+					last_index = i;
+			}
+			
+			motor_1_scheduler_valve_2_was_last = (last_index != 0) && (op.ID_VALVE_2_OP_INDEX == last_index);
+		}
+		
         motor_1_scheduler_valve_2_was_on = true;
     }
     
     if((motor_1_scheduler_valve_2_was_on == true) && (op.ID_VALVE_2 == Off))
     {
-        if(op.ID_MOTOR_1_INDEX == Off)
-        {
-			timer.ID_MOTOR_1_DIR_TIME = 0;
-            timer.ID_MOTOR_1_OP_TIME = 0;
+		if(motor_1_scheduler_valve_2_was_last == true)
+		{
+			if(op.ID_MOTOR_1_INDEX == Off)
+			{
+				timer.ID_MOTOR_1_DIR_TIME = 0;
+				timer.ID_MOTOR_1_OP_TIME = 0;
+				
+				op.ID_MOTOR_1_INDEX = On;
+				op.ID_MOTOR_1_DIR = CW;
+				op.ID_MOTOR_1_DIR_INDEX = Stop;
+			}
+		}
 			
-            op.ID_MOTOR_1_INDEX = On;
-            op.ID_MOTOR_1_DIR = CW;
-            op.ID_MOTOR_1_DIR_INDEX = Stop;
-        }
-        
         motor_1_scheduler_valve_2_was_on = false;
+		motor_1_scheduler_valve_2_was_last = false;
     }
 }
 
