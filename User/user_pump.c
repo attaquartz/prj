@@ -124,6 +124,11 @@ void pump_2_handler(void)
             PUMP_2 = On;
 			
             op.ID_PUMP_2 = On;
+			
+			if(op.ID_HEATER_1 == Off)
+            {
+                pump_2_handler_heater_1_was_on = true;
+            }
         }
 	}
 	

@@ -374,7 +374,7 @@ void temp_up_limit_time_handler(void)
 					MOTOR_4_DIR = Off;
 				
 					op.ID_MOTOR_4 = Off;
-					op.ID_MOTOR_4_DIR = 0;
+					op.ID_MOTOR_4_DIR = Off;
 				}
 				
 				if(op.ID_MOTOR_5_DIR != Off)
@@ -385,7 +385,7 @@ void temp_up_limit_time_handler(void)
 					MOTOR_5 = Off;
 				
 					op.ID_MOTOR_5 = Off;
-					op.ID_MOTOR_5_DIR = 0;
+					op.ID_MOTOR_5_DIR = Off;
 				}
 				
 				if(op.ID_MOTOR_6 != Off)
@@ -397,7 +397,7 @@ void temp_up_limit_time_handler(void)
 					MOTOR_6_DIR = Off;
 				
 					op.ID_MOTOR_6 = Off;
-					op.ID_MOTOR_6_DIR = 0;
+					op.ID_MOTOR_6_DIR = Off;
 				}
 			}
 		}

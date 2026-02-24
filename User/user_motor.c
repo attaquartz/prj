@@ -462,8 +462,8 @@ void motor_4_reset(void)
 	MOTOR_4 = Off;
 	MOTOR_4_DIR = Off;
 	
-	op.ID_MOTOR_4 = Stop;
-	op.ID_MOTOR_4_DIR = Stop;
+	op.ID_MOTOR_4 = Off;
+	op.ID_MOTOR_4_DIR = Off;
 	
 	timer.ID_MOTOR_4_OP_TIME = 0;
 	timer.ID_MOTOR_4_DIR_TIME = 0;
@@ -522,7 +522,7 @@ void motor_4_handler(void)
 			MOTOR_4_DIR = Off;
 			
 			op.ID_MOTOR_4 = Off;
-			op.ID_MOTOR_4_DIR = 0;
+			op.ID_MOTOR_4_DIR = Off;
 		}
 	}
 }
@@ -531,8 +531,8 @@ void motor_5_reset(void)
 {
 	MOTOR_5 = Off;
 	
-	op.ID_MOTOR_5 = Stop;
-	op.ID_MOTOR_5_DIR = Stop;
+	op.ID_MOTOR_5 = Off;
+	op.ID_MOTOR_5_DIR = Off;
 	
 	timer.ID_MOTOR_5_OP_TIME = 0;
 	timer.ID_MOTOR_5_DIR_TIME = 0;
@@ -586,7 +586,7 @@ void motor_5_handler(void)
 			MOTOR_5 = Off;
 			
 			op.ID_MOTOR_5 = Off;
-			op.ID_MOTOR_5_DIR = 0;
+			op.ID_MOTOR_5_DIR = Off;
 		}
 	}
 }
@@ -596,8 +596,8 @@ void motor_6_reset(void)
 	MOTOR_6 = Off;
 	MOTOR_6_DIR = Off;
 	
-	op.ID_MOTOR_6 = Stop;
-	op.ID_MOTOR_6_DIR = Stop;
+	op.ID_MOTOR_6 = Off;
+	op.ID_MOTOR_6_DIR = Off;
 	
 	timer.ID_MOTOR_6_OP_TIME = 0;
 	timer.ID_MOTOR_6_DIR_TIME = 0;
