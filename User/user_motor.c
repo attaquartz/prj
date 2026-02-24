@@ -699,7 +699,10 @@ void motor_7_handler(void)
 		
 		PWM_ConfigOutputChannel(PWM1, 1, MOTOR_7_FREQ, op.ID_MOTOR_7_OUTPUT);
 		
-		motor_7_handler_heater_1_was_on = false;
+		if(op.ID_HEATER_1 == Off)
+        {
+            motor_7_handler_heater_1_was_on = true;
+        }
     }
 	
 	if(op.ID_HEATER_1 == On)
