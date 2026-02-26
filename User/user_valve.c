@@ -80,8 +80,6 @@ void valve_1_scheduler(void)
 			
             if((((valve_1_day_counter - 1) % sp.ID_VALVE_1_INTERVAL) == 0) && (op.ID_VALVE_1 == Off))
             {
-				uint8_t power_on_hour_24 = (valve_1_day_counter == 1) ? ((valve_1_power_on_hour == 0) ? 24 : valve_1_power_on_hour) : 0;
-				
                 for(int i = 1; i < arr_size; i++)
                 {
                     if(valve_1_schedule[i] == 0)
@@ -93,7 +91,9 @@ void valve_1_scheduler(void)
                     {
 						if(valve_1_day_counter == 1)
                         {
-                            if(valve_1_schedule[i] <= power_on_hour_24)
+							uint8_t slot_hour = (valve_1_schedule[i] == 24) ? 0 : (uint8_t)valve_1_schedule[i];
+							
+                            if(slot_hour <= valve_1_power_on_hour)
                             {
                                 continue;
                             }

@@ -44,7 +44,7 @@ void water_pump_1_reset(void)
 
 void water_pump_1_scheduler(void)
 {
-	const uint32_t water_pump_1_schedule[] = {0,
+	const uint32_t sludge_discharge_schedule[] = {0,
     sp.ID_SLUDGE_DISCHARGE_START_TIME_1,
     sp.ID_SLUDGE_DISCHARGE_START_TIME_2,
     sp.ID_SLUDGE_DISCHARGE_START_TIME_3,
@@ -64,7 +64,7 @@ void water_pump_1_scheduler(void)
 	__enable_irq();
 	uint8_t current_hour_24 = (current_hour == 0) ? 24 : current_hour;
 	
-	uint32_t arr_size = sizeof(water_pump_1_schedule) / sizeof(uint32_t);
+	uint32_t arr_size = sizeof(sludge_discharge_schedule) / sizeof(uint32_t);
 	
 	if(sp.ID_SLUDGE_DISCHARGE_INTERVAL == 0)
 		return;
@@ -93,20 +93,20 @@ void water_pump_1_scheduler(void)
             {
 				if(op.ID_MOTOR_8 == Off)
 				{
-					uint8_t power_on_hour_24 = (water_pump_1_day_counter == 1) ? ((water_pump_1_power_on_hour == 0) ? 24 : water_pump_1_power_on_hour) : 0;
-					
 					for(int i = 1; i < arr_size; i++)
 					{
-						if(water_pump_1_schedule[i] == 0)
+						if(sludge_discharge_schedule[i] == 0)
 						{
 							continue;
 						}
 						
-						if(current_hour_24 == water_pump_1_schedule[i])
+						if(current_hour_24 == sludge_discharge_schedule[i])
 						{
 							if(water_pump_1_day_counter == 1)
 							{
-								if(water_pump_1_schedule[i] <= power_on_hour_24)
+								uint8_t slot_hour = (sludge_discharge_schedule[i] == 24) ? 0 : (uint8_t)sludge_discharge_schedule[i];
+								
+								if(slot_hour <= water_pump_1_power_on_hour)
 								{
 									continue;
 								}
@@ -206,7 +206,7 @@ void water_pump_2_reset(void)
 
 void water_pump_2_scheduler(void)
 {
-	const uint32_t water_pump_2_schedule[] = {0,
+	const uint32_t sludge_discharge_schedule[] = {0,
     sp.ID_SLUDGE_DISCHARGE_START_TIME_1,
     sp.ID_SLUDGE_DISCHARGE_START_TIME_2,
     sp.ID_SLUDGE_DISCHARGE_START_TIME_3,
@@ -226,7 +226,7 @@ void water_pump_2_scheduler(void)
 	__enable_irq();
 	uint8_t current_hour_24 = (current_hour == 0) ? 24 : current_hour;
 	
-	uint32_t arr_size = sizeof(water_pump_2_schedule) / sizeof(uint32_t);
+	uint32_t arr_size = sizeof(sludge_discharge_schedule) / sizeof(uint32_t);
 	
 	if(sp.ID_SLUDGE_DISCHARGE_INTERVAL == 0)
 		return;
@@ -255,20 +255,20 @@ void water_pump_2_scheduler(void)
             {
 				if(op.ID_MOTOR_8 == Off)
 				{
-					uint8_t power_on_hour_24 = (water_pump_2_day_counter == 1) ? ((water_pump_2_power_on_hour == 0) ? 24 : water_pump_2_power_on_hour) : 0;
-					
 					for(int i = 1; i < arr_size; i++)
 					{
-						if(water_pump_2_schedule[i] == 0)
+						if(sludge_discharge_schedule[i] == 0)
 						{
 							continue;
 						}
 						
-						if(current_hour_24 == water_pump_2_schedule[i])
+						if(current_hour_24 == sludge_discharge_schedule[i])
 						{
 							if(water_pump_2_day_counter == 1)
 							{
-								if(water_pump_2_schedule[i] <= power_on_hour_24)
+								uint8_t slot_hour = (sludge_discharge_schedule[i] == 24) ? 0 : (uint8_t)sludge_discharge_schedule[i];
+								
+								if(slot_hour <= water_pump_2_power_on_hour)
 								{
 									continue;
 								}
@@ -509,8 +509,6 @@ void water_pump_5_scheduler(void)
 			
             if((((water_pump_5_day_counter - 1) % sp.ID_WATER_PUMP_5_INTERVAL) == 0) && (op.ID_WATER_PUMP_5 == Off))
             {
-				uint8_t power_on_hour_24 = (water_pump_5_day_counter == 1) ? ((water_pump_5_power_on_hour == 0) ? 24 : water_pump_5_power_on_hour) : 0;
-				
 				for(int i = 1; i < arr_size; i++)
 				{
 					if(water_pump_5_schedule[i] == 0)
@@ -522,7 +520,9 @@ void water_pump_5_scheduler(void)
 					{
 						if(water_pump_5_day_counter == 1)
 						{
-							if(water_pump_5_schedule[i] <= power_on_hour_24)
+							uint8_t slot_hour = (water_pump_5_schedule[i] == 24) ? 0 : (uint8_t)water_pump_5_schedule[i];
+							
+							if(slot_hour <= water_pump_5_power_on_hour)
 							{
 								continue;
 							}

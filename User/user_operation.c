@@ -289,6 +289,11 @@ void uv_lamp_handler(void)
 	if(op.ID_PUMP_1 == On)
     {
         uv_lamp_handler_pump_1_was_on = true;
+		
+		if(op.ID_UV_LAMP == On)
+		{
+           timer.ID_UV_LAMP_OFF_DELAY = 0;
+		}
     }
 	
 	if(op.ID_UV_LAMP == Off)
@@ -479,7 +484,6 @@ void auto_handler(void)
 		temp_up_limit_time_handler();
 	}
 	
-
 	radiator_handler();
 	fan_3_handler();
 	water_pump_4_handler();

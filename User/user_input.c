@@ -24,7 +24,7 @@ void level_sensor_handler(uint32_t lv)
 {
 	op.ID_LEVEL_SENSOR = (op.ID_LEVEL_SENSOR & ~(1 << lv)) | (level_sensor[lv].state << lv);
 	
-	if(level_sensor[lv].state == Enable)
+	if(level_sensor[lv].state == Enable) 
 	{
 		switch(lv)
 		{

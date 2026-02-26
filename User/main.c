@@ -7,10 +7,12 @@ void SYS_Init(void)
     /*---------------------------------------------------------------------------------------------------------*/
 	
 	/* Enable clock source */
-    CLK_EnableXtalRC(CLK_PWRCTL_LIRCEN_Msk|CLK_PWRCTL_HIRCEN_Msk);
+    //CLK_EnableXtalRC(CLK_PWRCTL_LXTEN_Msk|CLK_PWRCTL_HIRCEN_Msk);
+	CLK_EnableXtalRC(CLK_PWRCTL_LIRCEN_Msk|CLK_PWRCTL_HIRCEN_Msk);
 	
 	/* Waiting for clock source ready */
-    CLK_WaitClockReady(CLK_STATUS_LIRCSTB_Msk|CLK_STATUS_HIRCSTB_Msk);
+    //CLK_WaitClockReady(CLK_STATUS_LXTSTB_Msk|CLK_STATUS_HIRCSTB_Msk);
+	CLK_WaitClockReady(CLK_STATUS_LIRCSTB_Msk|CLK_STATUS_HIRCSTB_Msk);
 
     /* Set core clock */
     CLK_SetCoreClock(FREQ_72MHZ);
@@ -45,6 +47,7 @@ void SYS_Init(void)
     CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UARTSEL_HIRC, CLK_CLKDIV0_UART(1));
 	CLK_SetModuleClock(UART1_MODULE, CLK_CLKSEL1_UARTSEL_HIRC, CLK_CLKDIV0_UART(1));
     CLK_SetModuleClock(UART2_MODULE, CLK_CLKSEL1_UARTSEL_HIRC, CLK_CLKDIV0_UART(1));
+	//CLK_SetModuleClock(RTC_MODULE, CLK_CLKSEL2_RTCSEL_LXT, MODULE_NoMsk);
 	CLK_SetModuleClock(RTC_MODULE, CLK_CLKSEL2_RTCSEL_LIRC, MODULE_NoMsk);
     CLK_SetModuleClock(WDT_MODULE, CLK_CLKSEL1_WDTSEL_LIRC, MODULE_NoMsk);
 
@@ -78,7 +81,7 @@ void GPIO_Init(void)
     SYS->GPE_MFPH = SYS_GPE_MFPH_PE13MFP_GPIO | SYS_GPE_MFPH_PE12MFP_GPIO | SYS_GPE_MFPH_PE11MFP_GPIO | SYS_GPE_MFPH_PE10MFP_GPIO | SYS_GPE_MFPH_PE9MFP_GPIO | SYS_GPE_MFPH_PE8MFP_GPIO;
     SYS->GPE_MFPL = SYS_GPE_MFPL_PE5MFP_GPIO | SYS_GPE_MFPL_PE4MFP_GPIO | SYS_GPE_MFPL_PE1MFP_GPIO | SYS_GPE_MFPL_PE0MFP_GPIO;
 	
-    SYS->GPF_MFPL = SYS_GPF_MFPL_PF7MFP_GPIO | SYS_GPF_MFPL_PF6MFP_GPIO | SYS_GPF_MFPL_PF5MFP_GPIO | SYS_GPF_MFPL_PF4MFP_GPIO | SYS_GPF_MFPL_PF3MFP_GPIO | SYS_GPF_MFPL_PF2MFP_GPIO /*| SYS_GPF_MFPL_PF1MFP_X32_IN | SYS_GPF_MFPL_PF0MFP_X32_OUT*/;
+    SYS->GPF_MFPL = SYS_GPF_MFPL_PF7MFP_GPIO | SYS_GPF_MFPL_PF6MFP_GPIO | SYS_GPF_MFPL_PF5MFP_GPIO | SYS_GPF_MFPL_PF4MFP_GPIO | SYS_GPF_MFPL_PF3MFP_GPIO | SYS_GPF_MFPL_PF2MFP_GPIO;
 }
 
 void ADC0_Init(void)
@@ -151,17 +154,40 @@ void TIMER3_Init(void)
 void RTC_Init(void)
 {
 	S_RTC_TIME_DATA_T sWriteRTC;
+	bool is_first_boot = false;
+	uint8_t rtc_open_try = 0;
 	
-	sWriteRTC.u32Year       = RTC_YEAR2000 + BCD_TO_DEC((sp.ID_RTC_DATE >> 24));
-    sWriteRTC.u32Month      = BCD_TO_DEC((sp.ID_RTC_DATE >> 16));
-    sWriteRTC.u32Day        = BCD_TO_DEC((sp.ID_RTC_DATE >> 8));
-    sWriteRTC.u32DayOfWeek  = BCD_TO_DEC((sp.ID_RTC_DATE >> 0));
-    sWriteRTC.u32Hour       = BCD_TO_DEC((sp.ID_RTC_TIME >> 16));
-    sWriteRTC.u32Minute     = BCD_TO_DEC((sp.ID_RTC_TIME >> 8));
-    sWriteRTC.u32Second     = BCD_TO_DEC((sp.ID_RTC_TIME >> 0));
-    sWriteRTC.u32TimeScale  = RTC_CLOCK_24;
+	//SYS->GPF_MFPL &= ~(SYS_GPF_MFPL_PF1MFP_Msk | SYS_GPF_MFPL_PF0MFP_Msk);
+	//SYS->GPF_MFPL |= SYS_GPF_MFPL_PF1MFP_X32_IN | SYS_GPF_MFPL_PF0MFP_X32_OUT;
 	
-    while(RTC_Open(&sWriteRTC));
+	RTC_GetDateAndTime(&sWriteRTC);
+	
+	if((sWriteRTC.u32Year < 2000) || (sWriteRTC.u32Year > 2099))
+		is_first_boot = true;
+	
+	if((sWriteRTC.u32Month < 1) || (sWriteRTC.u32Month > 12))
+		is_first_boot = true;
+	
+	if((sWriteRTC.u32Day < 1) || (sWriteRTC.u32Day > 31))
+		is_first_boot = true;
+	
+	if(is_first_boot == true)
+	{
+		sWriteRTC.u32Year       = RTC_YEAR2000 + BCD_TO_DEC((sp.ID_RTC_DATE >> 24));
+		sWriteRTC.u32Month      = BCD_TO_DEC((sp.ID_RTC_DATE >> 16));
+		sWriteRTC.u32Day        = BCD_TO_DEC((sp.ID_RTC_DATE >> 8));
+		sWriteRTC.u32DayOfWeek  = BCD_TO_DEC((sp.ID_RTC_DATE >> 0));
+		sWriteRTC.u32Hour       = BCD_TO_DEC((sp.ID_RTC_TIME >> 16));
+		sWriteRTC.u32Minute     = BCD_TO_DEC((sp.ID_RTC_TIME >> 8));
+		sWriteRTC.u32Second     = BCD_TO_DEC((sp.ID_RTC_TIME >> 0));
+		sWriteRTC.u32TimeScale  = RTC_CLOCK_24;
+	}
+	
+    while(RTC_Open(&sWriteRTC) != 0)
+	{
+		if(++rtc_open_try > 3)
+			return;
+	}
 	
 	RTC_EnableInt(RTC_INTEN_TICKIEN_Msk);
     RTC_SetTickPeriod(RTC_TICK_1_SEC);
@@ -485,9 +511,6 @@ int main(void)
 	TIMER3_Init();
 	//WDT_Init();
 	
-    /* Lock protected registers */
-    SYS_LockReg();
-	
 	Event_Init();
 	eeprom_Read();
 	//Flash_Init();
@@ -501,6 +524,9 @@ int main(void)
 	Load_Output_Init();
 	ModbusRTU_Init();
 	Device_Init();
+	
+	/* Lock protected registers */
+    SYS_LockReg();
 	
 	while(1)
 	{

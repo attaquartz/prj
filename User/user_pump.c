@@ -224,9 +224,7 @@ void pump_3_scheduler(void)
             if((((pump_3_day_counter - 1) % sp.ID_PUMP_3_INTERVAL) == 0) && (op.ID_PUMP_3 == Off))
             {
 				if(level_sensor[L_REUSE].state == Enable)
-				{
-					uint8_t power_on_hour_24 = (pump_3_day_counter == 1) ? ((pump_3_power_on_hour == 0) ? 24 : pump_3_power_on_hour) : 0;
-					
+				{	
 					for(int i = 1; i < arr_size; i++)
 					{
 						if(pump_3_schedule[i] == 0)
@@ -238,7 +236,9 @@ void pump_3_scheduler(void)
 						{
 							if(pump_3_day_counter == 1)
 							{
-								if(pump_3_schedule[i] <= power_on_hour_24)
+								uint8_t slot_hour = (pump_3_schedule[i] == 24) ? 0 : (uint8_t)pump_3_schedule[i];
+								
+								if(slot_hour <= pump_3_power_on_hour)
 								{
 									continue;
 								}

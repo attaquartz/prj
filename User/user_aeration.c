@@ -13,21 +13,27 @@ void aeration_1_handler(void)
 {
 	if((op.ID_VALVE_3 == Off) && (op.ID_VALVE_4 == Off) && (op.ID_VALVE_5 == Off) && (op.ID_VALVE_6 == Off))
 	{
-		if(AERATION_1 == On)
+		if(op.ID_AERATION_1 == On)
 		{
-			AERATION_1 = Off;
+			if(AERATION_1 == On)
+			{
+				AERATION_1 = Off;
+			}
+			
+			op.ID_AERATION_1 = Off;
 		}
-		
-		op.ID_AERATION_1 = Off;
 	}
 	else
 	{
-		if(AERATION_1 == Off)
+		if(op.ID_AERATION_1 == Off)
 		{
-			AERATION_1 = On;
+			if(AERATION_1 == Off)
+			{
+				AERATION_1 = On;
+			}
+			
+			op.ID_AERATION_1 = On;
 		}
-		
-		op.ID_AERATION_1 = On;
 	}
 }
 
@@ -72,6 +78,11 @@ void aeration_3_handler(void)
 	if(op.ID_PUMP_1 == On)
     {
         aeration_3_handler_pump_1_was_on = true;
+		
+		if(op.ID_AERATION_3 == On)
+		{
+			timer.ID_AERATION_3_OFF_DELAY = 0;
+		}
     }
 	
 	if(op.ID_AERATION_3 == Off)

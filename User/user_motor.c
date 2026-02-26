@@ -14,7 +14,6 @@ static bool motor_7_handler_heater_1_was_on = false;
 
 static uint32_t motor_8_day_counter = 1;
 static uint8_t motor_8_last_hour = 0xff;
-static uint8_t motor_8_schedule_hour_check = 0xff;
 static bool motor_8_day_changed = false;
 
 static uint8_t actuator_1_handler_motor_2_prev_index = 0;
@@ -733,7 +732,6 @@ void motor_8_scheduler_init(void)
 {
     motor_8_day_counter = 1;
     motor_8_last_hour = 0xff;
-    motor_8_schedule_hour_check = 0xff;
     motor_8_day_changed = false;
     
     MOTOR_8 = On;
@@ -747,8 +745,6 @@ void motor_8_reset(void)
 	
 	op.ID_MOTOR_8 = Off;
 	op.ID_MOTOR_8_OFF_TIME_INDEX = 0;
-	
-	timer.ID_MOTOR_8_OFF_DELAY = 0;
 }
 
 void motor_8_handler(void)
@@ -833,8 +829,6 @@ void motor_8_handler(void)
 	
 	if((op.ID_WATER_PUMP_1 == Off) && (op.ID_MOTOR_8_OFF_TIME_INDEX == 0))
 	{
-		timer.ID_MOTOR_8_OFF_DELAY = 0;
-		
 		if(op.ID_MOTOR_8 == Off)
 		{
 			MOTOR_8 = On;
