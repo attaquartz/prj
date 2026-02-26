@@ -23,7 +23,6 @@ typedef struct
 	volatile uint32_t ID_VALVE_5_OFF_DELAY;
 	volatile uint32_t ID_VALVE_6_ON_TIME;
 	volatile uint32_t ID_VALVE_6_OFF_DELAY;
-	volatile uint32_t ID_MOTOR_8_OFF_DELAY;
 	volatile uint32_t ID_WATER_PUMP_5_ON_TIME;
 	volatile uint32_t ID_VALVE_2_ON_TIME;
 	volatile uint32_t ID_VALVE_2_ON_DELAY;
@@ -81,10 +80,8 @@ typedef struct
 	uint16_t ID_AERATION_1;
 	uint16_t ID_AERATION_2;
 	uint16_t ID_WATER_PUMP_1;
-	uint16_t ID_WATER_PUMP_1_INTERVAL_INDEX;
 	uint16_t ID_WATER_PUMP_1_START_TIME_INDEX;
 	uint16_t ID_WATER_PUMP_2;
-	uint16_t ID_WATER_PUMP_2_INTERVAL_INDEX;
 	uint16_t ID_WATER_PUMP_2_START_TIME_INDEX;
 	uint16_t ID_WATER_PUMP_3;
 	uint16_t ID_VALVE_AIR_LIFTER_INDEX;
@@ -115,13 +112,10 @@ typedef struct
 	uint16_t ID_HEATER_1;
 	uint16_t ID_PUMP_2;
 	uint16_t ID_MOTOR_4;
-	uint16_t ID_MOTOR_4_INDEX;
 	uint16_t ID_MOTOR_4_DIR;
 	uint16_t ID_MOTOR_5;
-	uint16_t ID_MOTOR_5_INDEX;
 	uint16_t ID_MOTOR_5_DIR;
 	uint16_t ID_MOTOR_6;
-	uint16_t ID_MOTOR_6_INDEX;
 	uint16_t ID_MOTOR_6_DIR;
 	uint16_t ID_MOTOR_7;
 	uint16_t ID_MOTOR_7_FG;
@@ -277,8 +271,8 @@ typedef struct
 	uint32_t ID_MOTOR_7_OP_TIME;
 	uint32_t ID_MOTOR_7_SET_RPM;
 	
-	uint32_t ID_RADIATOR_ON_TEMP;
-	uint32_t ID_RADIATOR_OFF_TEMP;
+	int32_t ID_RADIATOR_ON_TEMP;
+	int32_t ID_RADIATOR_OFF_TEMP;
 	
 	uint32_t ID_HYSTERESIS_TIME;
 	
