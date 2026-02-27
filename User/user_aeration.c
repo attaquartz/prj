@@ -11,7 +11,8 @@ void aeration_1_reset(void)
 
 void aeration_1_handler(void)
 {
-	if((op.ID_VALVE_3 == Off) && (op.ID_VALVE_4 == Off) && (op.ID_VALVE_5 == Off) && (op.ID_VALVE_6 == Off))
+	//if((op.ID_VALVE_3 == Off) && (op.ID_VALVE_4 == Off) && (op.ID_VALVE_5 == Off) && (op.ID_VALVE_6 == Off))
+	if(op.ID_VALVE_AIR_LIFTER_INDEX == 0)
 	{
 		if(op.ID_AERATION_1 == On)
 		{

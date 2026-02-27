@@ -79,7 +79,7 @@ void radiator_reset(void)
 
 void radiator_handler(void)
 {
-	int8_t temperature_in = op.ID_ENVIRONMENT_IN >> 8;
+	int32_t temperature_in = (int8_t)(op.ID_ENVIRONMENT_IN >> 8);
 	
 	if(op.ID_RADIATOR == Off)
 	{

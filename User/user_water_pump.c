@@ -407,7 +407,6 @@ void water_pump_4_handler(void)
             WATER_PUMP_4 = On;
             
             op.ID_WATER_PUMP_4 = On;
-            op.ID_SWITCH |= BIT2;
 		}
 	}
 	
@@ -415,12 +414,16 @@ void water_pump_4_handler(void)
 	{
 		timer.ID_WATER_PUMP_4_TIMEOUT = 0;
 		
+		user_switch[FAUCET].state = Off;
+		
 		LAMP_FAUCET = Off;
 
 		WATER_PUMP_4 = Off;
 	
 		op.ID_WATER_PUMP_4 = Off;
-		op.ID_SWITCH &= ~BIT2;
+		op.ID_SWITCH = (op.ID_SWITCH & ~(1 << FAUCET)) | (user_switch[FAUCET].state << FAUCET);
+		
+		water_pump_4_off_condition = false;
 	}
 }
 

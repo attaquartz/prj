@@ -221,17 +221,25 @@ nmbs_error handle_write_multiple_registers_nmbs_server(uint16_t address, uint16_
     return NMBS_ERROR_NONE;
 }
 
+static inline int16_t round10(int16_t val)
+{
+	if(val >= 0)
+		return ((val + 5) / 10) * 10;
+    else
+        return ((val - 5) / 10) * 10;
+}
+
 void environment_sensor_handler(uint32_t id)
 {
-	int16_t temp_raw = ((environment_sensor[id].holding_data[0] + 5) / 10) * 10;
-	int16_t humi_raw = ((environment_sensor[id].holding_data[2] + 5) / 10) * 10;
+	int16_t temp_raw = round10((int16_t)environment_sensor[id].holding_data[0]);
+	int16_t humi_raw = round10((int16_t)environment_sensor[id].holding_data[2]);
 	
 	if(id == 0)
 	{
 		int8_t temperature_in = temp_raw / 10;
 		int8_t humidity_in = humi_raw / 10;
 		
-		op.ID_ENVIRONMENT_IN = (uint16_t)(((uint8_t)temperature_in << 8) | humidity_in);
+		op.ID_ENVIRONMENT_IN = (uint16_t)((temperature_in << 8) | humidity_in);
 		op.ID_DEV_STATE |= BIT2;
 	}
 	else if(id == 1)
@@ -239,7 +247,7 @@ void environment_sensor_handler(uint32_t id)
 		int8_t temperature_out = temp_raw / 10;
 		int8_t humidity_out = humi_raw / 10;
 		
-		op.ID_ENVIRONMENT_OUT = (uint16_t)(((uint8_t)temperature_out << 8) | humidity_out);
+		op.ID_ENVIRONMENT_OUT = (uint16_t)((temperature_out << 8) | humidity_out);
 		op.ID_DEV_STATE |= BIT3;
 	}
 	else{}
@@ -294,8 +302,8 @@ void modbus_server_update_handler(void)
 											   op.ID_POWER_METER_WH = 150931;
 	registers_nmbs_server[ID_POWER_METER_WH] = op.ID_POWER_METER_WH >> 16;
 	registers_nmbs_server[ID_POWER_METER_WH + 1] = op.ID_POWER_METER_WH & 0xffff;
-	registers_nmbs_server[ID_ENVIRONMENT_IN] = op.ID_ENVIRONMENT_IN = 0x0f39;
-	registers_nmbs_server[ID_ENVIRONMENT_OUT] = op.ID_ENVIRONMENT_OUT = 0xf717;
+	registers_nmbs_server[ID_ENVIRONMENT_IN] = op.ID_ENVIRONMENT_IN; //= 0x0f39;
+	registers_nmbs_server[ID_ENVIRONMENT_OUT] = op.ID_ENVIRONMENT_OUT; //= 0xf717;
 	registers_nmbs_server[ID_FLOW_METER] = op.ID_FLOW_METER = 45;
 	registers_nmbs_server[ID_FILTER_GAUGE] = op.ID_FILTER_GAUGE = 89;
 	registers_nmbs_server[ID_RADIATOR] = op.ID_RADIATOR;
