@@ -131,10 +131,6 @@ void ptc_fan_reset(void)
 {
 	PTC_FAN_1 = Off;
 	PTC_FAN_2 = Off;
-	PTC_FAN_3 = Off;
-	PTC_FAN_4 = Off;
-	PTC_FAN_5 = Off;
-	PTC_FAN_6 = Off;
 	
 	op.ID_PTC_FAN = Off;
 	
@@ -156,13 +152,8 @@ void ptc_fan_handler(void)
 		{
 			PTC_FAN_1 = On;
 			PTC_FAN_2 = On;
-			PTC_FAN_3 = On;
-			PTC_FAN_4 = On;
-			PTC_FAN_5 = On;
-			PTC_FAN_6 = On;
 			
-			op.ID_PTC_FAN = (PTC_FAN_6 << 5) | (PTC_FAN_5 << 4) | \
-							(PTC_FAN_4 << 3) | (PTC_FAN_3 << 2) | (PTC_FAN_2 << 1) | (PTC_FAN_1 << 0);
+			op.ID_PTC_FAN = (PTC_FAN_2 << 1) | (PTC_FAN_1 << 0);
 			
 			timer.ID_PTC_FAN_OP_TIME = 0;
 		}
@@ -180,26 +171,16 @@ void ptc_fan_handler(void)
 				
 				PTC_FAN_1 = Off;
 				PTC_FAN_2 = Off;
-				PTC_FAN_3 = Off;
-				PTC_FAN_4 = Off;
-				PTC_FAN_5 = Off;
-				PTC_FAN_6 = Off;
 				
-				op.ID_PTC_FAN = (PTC_FAN_6 << 5) | (PTC_FAN_5 << 4) | \
-								(PTC_FAN_4 << 3) | (PTC_FAN_3 << 2) | (PTC_FAN_2 << 1) | (PTC_FAN_1 << 0);
+				op.ID_PTC_FAN = (PTC_FAN_2 << 1) | (PTC_FAN_1 << 0);
 			}
 		}
 		else
 		{
 			PTC_FAN_1 = Off;
 			PTC_FAN_2 = Off;
-			PTC_FAN_3 = Off;
-			PTC_FAN_4 = Off;
-			PTC_FAN_5 = Off;
-			PTC_FAN_6 = Off;
 			
-			op.ID_PTC_FAN = (PTC_FAN_6 << 5) | (PTC_FAN_5 << 4) | \
-							(PTC_FAN_4 << 3) | (PTC_FAN_3 << 2) | (PTC_FAN_2 << 1) | (PTC_FAN_1 << 0);
+			op.ID_PTC_FAN = (PTC_FAN_2 << 1) | (PTC_FAN_1 << 0);
 		}
 	}
 }

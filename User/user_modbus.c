@@ -302,8 +302,8 @@ void modbus_server_update_handler(void)
 											   op.ID_POWER_METER_WH = 150931;
 	registers_nmbs_server[ID_POWER_METER_WH] = op.ID_POWER_METER_WH >> 16;
 	registers_nmbs_server[ID_POWER_METER_WH + 1] = op.ID_POWER_METER_WH & 0xffff;
-	registers_nmbs_server[ID_ENVIRONMENT_IN] = op.ID_ENVIRONMENT_IN; //= 0x0f39;
-	registers_nmbs_server[ID_ENVIRONMENT_OUT] = op.ID_ENVIRONMENT_OUT; //= 0xf717;
+	registers_nmbs_server[ID_ENVIRONMENT_IN] = op.ID_ENVIRONMENT_IN = 0x0f39;
+	registers_nmbs_server[ID_ENVIRONMENT_OUT] = op.ID_ENVIRONMENT_OUT = 0xf717;
 	registers_nmbs_server[ID_FLOW_METER] = op.ID_FLOW_METER = 45;
 	registers_nmbs_server[ID_FILTER_GAUGE] = op.ID_FILTER_GAUGE = 89;
 	registers_nmbs_server[ID_RADIATOR] = op.ID_RADIATOR;
@@ -1110,13 +1110,8 @@ void modbus_server_write_handler(uint32_t addr)
 		{
 			PTC_FAN_1 = (registers_nmbs_server[addr] & BIT0) ? On : Off;
 			PTC_FAN_2 = (registers_nmbs_server[addr] & BIT1) ? On : Off;
-			PTC_FAN_3 = (registers_nmbs_server[addr] & BIT2) ? On : Off;
-			PTC_FAN_4 = (registers_nmbs_server[addr] & BIT3) ? On : Off;
-			PTC_FAN_5 = (registers_nmbs_server[addr] & BIT4) ? On : Off;
-			PTC_FAN_6 = (registers_nmbs_server[addr] & BIT5) ? On : Off;
 			
-			op.ID_PTC_FAN = (PTC_FAN_6 << 5) | (PTC_FAN_5 << 4) | \
-							(PTC_FAN_4 << 3) | (PTC_FAN_3 << 2) | (PTC_FAN_2 << 1) | (PTC_FAN_1 << 0);
+			op.ID_PTC_FAN = (PTC_FAN_2 << 1) | (PTC_FAN_1 << 0);
 		}
 		break;
 		

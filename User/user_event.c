@@ -2,6 +2,10 @@
 
 EventQueue g_event_queue;
 
+volatile uint32_t dbg_queue_count     = 0;
+volatile uint32_t dbg_queue_watermark = 0;
+volatile uint32_t dbg_queue_overflow  = 0;
+
 void EventQueue_Init(EventQueue *queue);
 bool EventQueue_Enqueue(EventQueue *queue, int32_t status, int32_t index);
 bool EventQueue_Dequeue(EventQueue *queue, Event *event);
@@ -46,6 +50,7 @@ bool EventQueue_Enqueue(EventQueue *queue, int32_t status, int32_t index)
 	if (next_tail == queue->head)
 	{
 		__enable_irq();
+		dbg_queue_overflow++;
 		
 		return false;
 	}
@@ -54,6 +59,11 @@ bool EventQueue_Enqueue(EventQueue *queue, int32_t status, int32_t index)
     queue->buffer[queue->tail].index = index;
 	
     queue->tail = next_tail;
+	
+	dbg_queue_count = EventQueue_Count(queue);
+	
+    if(dbg_queue_count > dbg_queue_watermark)
+		dbg_queue_watermark = dbg_queue_count;
     
     __enable_irq();
 	
@@ -74,6 +84,8 @@ bool EventQueue_Dequeue(EventQueue *queue, Event *event)
     event->index = queue->buffer[queue->head].index;
     
     queue->head = (queue->head + 1) % EVENT_QUEUE_SIZE;
+	
+	dbg_queue_count = EventQueue_Count(queue);
     
     __enable_irq();
 	

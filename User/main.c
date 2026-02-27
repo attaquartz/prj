@@ -7,12 +7,12 @@ void SYS_Init(void)
     /*---------------------------------------------------------------------------------------------------------*/
 	
 	/* Enable clock source */
-    //CLK_EnableXtalRC(CLK_PWRCTL_LXTEN_Msk|CLK_PWRCTL_HIRCEN_Msk);
-	CLK_EnableXtalRC(CLK_PWRCTL_LIRCEN_Msk|CLK_PWRCTL_HIRCEN_Msk);
+    CLK_EnableXtalRC(CLK_PWRCTL_LXTEN_Msk|CLK_PWRCTL_HIRCEN_Msk);
+	//CLK_EnableXtalRC(CLK_PWRCTL_LIRCEN_Msk|CLK_PWRCTL_HIRCEN_Msk);
 	
 	/* Waiting for clock source ready */
-    //CLK_WaitClockReady(CLK_STATUS_LXTSTB_Msk|CLK_STATUS_HIRCSTB_Msk);
-	CLK_WaitClockReady(CLK_STATUS_LIRCSTB_Msk|CLK_STATUS_HIRCSTB_Msk);
+    CLK_WaitClockReady(CLK_STATUS_LXTSTB_Msk|CLK_STATUS_HIRCSTB_Msk);
+	//CLK_WaitClockReady(CLK_STATUS_LIRCSTB_Msk|CLK_STATUS_HIRCSTB_Msk);
 
     /* Set core clock */
     CLK_SetCoreClock(FREQ_72MHZ);
@@ -47,8 +47,8 @@ void SYS_Init(void)
     CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UARTSEL_HIRC, CLK_CLKDIV0_UART(1));
 	CLK_SetModuleClock(UART1_MODULE, CLK_CLKSEL1_UARTSEL_HIRC, CLK_CLKDIV0_UART(1));
     CLK_SetModuleClock(UART2_MODULE, CLK_CLKSEL1_UARTSEL_HIRC, CLK_CLKDIV0_UART(1));
-	//CLK_SetModuleClock(RTC_MODULE, CLK_CLKSEL2_RTCSEL_LXT, MODULE_NoMsk);
-	CLK_SetModuleClock(RTC_MODULE, CLK_CLKSEL2_RTCSEL_LIRC, MODULE_NoMsk);
+	CLK_SetModuleClock(RTC_MODULE, CLK_CLKSEL2_RTCSEL_LXT, MODULE_NoMsk);
+	//CLK_SetModuleClock(RTC_MODULE, CLK_CLKSEL2_RTCSEL_LIRC, MODULE_NoMsk);
     CLK_SetModuleClock(WDT_MODULE, CLK_CLKSEL1_WDTSEL_LIRC, MODULE_NoMsk);
 
     /* Update System Core Clock */
@@ -157,8 +157,8 @@ void RTC_Init(void)
 	bool is_first_boot = false;
 	uint8_t rtc_open_try = 0;
 	
-	//SYS->GPF_MFPL &= ~(SYS_GPF_MFPL_PF1MFP_Msk | SYS_GPF_MFPL_PF0MFP_Msk);
-	//SYS->GPF_MFPL |= SYS_GPF_MFPL_PF1MFP_X32_IN | SYS_GPF_MFPL_PF0MFP_X32_OUT;
+	SYS->GPF_MFPL &= ~(SYS_GPF_MFPL_PF1MFP_Msk | SYS_GPF_MFPL_PF0MFP_Msk);
+	SYS->GPF_MFPL |= SYS_GPF_MFPL_PF1MFP_X32_IN | SYS_GPF_MFPL_PF0MFP_X32_OUT;
 	
 	RTC_GetDateAndTime(&sWriteRTC);
 	
@@ -272,9 +272,9 @@ void Alert_Sensor_Init(void)
 	GPIO_EnableInt(PD, 14, GPIO_INT_BOTH_EDGE);
 	GPIO_ENABLE_DEBOUNCE(PD, BIT14);
 	
-	/*GPIO_SetMode(PD, BIT14, GPIO_MODE_INPUT); // SENSOR_TEMP_4 AL3
-	GPIO_EnableInt(PD, 14, GPIO_INT_BOTH_EDGE);
-	GPIO_ENABLE_DEBOUNCE(PD, BIT14);*/
+	GPIO_SetMode(PD, BIT2, GPIO_MODE_INPUT); // SENSOR_TEMP_4 AL3
+	GPIO_EnableInt(PD, 2, GPIO_INT_BOTH_EDGE);
+	GPIO_ENABLE_DEBOUNCE(PD, BIT2);
 }
 
 void Switch_Init(void)
@@ -283,9 +283,9 @@ void Switch_Init(void)
 	GPIO_EnableInt(PD, 1, GPIO_INT_RISING);
 	GPIO_ENABLE_DEBOUNCE(PD, BIT1);
 	
-	GPIO_SetMode(PD, BIT2, GPIO_MODE_INPUT); // SW_SPARE_1
+	/*GPIO_SetMode(PD, BIT2, GPIO_MODE_INPUT); // SW_SPARE_1
 	GPIO_EnableInt(PD, 2, GPIO_INT_RISING);
-	GPIO_ENABLE_DEBOUNCE(PD, BIT2);
+	GPIO_ENABLE_DEBOUNCE(PD, BIT2);*/
 	
 	GPIO_SetMode(PD, BIT3, GPIO_MODE_INPUT); // SW_AUTO_STOP
 	GPIO_EnableInt(PD, 3, GPIO_INT_RISING);
@@ -328,13 +328,13 @@ void Load_Output_Init(void)
 	GPIO_SetMode(PA, BIT0, GPIO_MODE_OUTPUT); // VALVE_2
 	GPIO_SetMode(PA, BIT3, GPIO_MODE_OUTPUT); // VALVE_3
 	GPIO_SetMode(PA, BIT4, GPIO_MODE_OUTPUT); // PTC_FAN_1
-	GPIO_SetMode(PA, BIT5, GPIO_MODE_OUTPUT); // PTC_FAN_2
-	GPIO_SetMode(PA, BIT6, GPIO_MODE_OUTPUT); // PTC_FAN_3
-	GPIO_SetMode(PA, BIT7, GPIO_MODE_OUTPUT); // PTC_FAN_4
+	//GPIO_SetMode(PA, BIT5, GPIO_MODE_OUTPUT); // PTC_FAN_2
+	//GPIO_SetMode(PA, BIT6, GPIO_MODE_OUTPUT); // PTC_FAN_3
+	GPIO_SetMode(PA, BIT7, GPIO_MODE_OUTPUT); // PTC_FAN_2
 	GPIO_SetMode(PA, BIT8, GPIO_MODE_OUTPUT); // FAN_1
 	GPIO_SetMode(PA, BIT9, GPIO_MODE_OUTPUT); // FAN_2
 	GPIO_SetMode(PA, BIT10, GPIO_MODE_OUTPUT); // VALVE_7
-	GPIO_SetMode(PA, BIT11, GPIO_MODE_OUTPUT); // PTC_FAN_6
+	GPIO_SetMode(PA, BIT11, GPIO_MODE_OUTPUT); // MOTOR_4
 	GPIO_SetMode(PA, BIT14, GPIO_MODE_OUTPUT); // VALVE_1
 	
 	GPIO_SetMode(PB, BIT5, GPIO_MODE_OUTPUT); // RADIATOR
@@ -371,14 +371,14 @@ void Load_Output_Init(void)
 	GPIO_SetMode(PE, BIT5, GPIO_MODE_OUTPUT); // AERATION_1
 	GPIO_SetMode(PE, BIT8, GPIO_MODE_OUTPUT); // MOTOR_8
 	GPIO_SetMode(PE, BIT9, GPIO_MODE_OUTPUT); // FAN_3
-	GPIO_SetMode(PE, BIT10, GPIO_MODE_OUTPUT); // MOTOR_4
+	GPIO_SetMode(PE, BIT10, GPIO_MODE_OUTPUT); // MOTOR_4_DIR
 	GPIO_SetMode(PE, BIT11, GPIO_MODE_OUTPUT); // MOTOR_3
-	GPIO_SetMode(PE, BIT12, GPIO_MODE_OUTPUT); // MOTOR_6
+	GPIO_SetMode(PE, BIT12, GPIO_MODE_OUTPUT); // MOTOR_6_DIR
 	GPIO_SetMode(PE, BIT13, GPIO_MODE_OUTPUT); // MOTOR_1
 	
 	GPIO_SetMode(PF, BIT3, GPIO_MODE_OUTPUT); // PUMP_1
 	GPIO_SetMode(PF, BIT4, GPIO_MODE_OUTPUT); // ACTUATOR_1
-	GPIO_SetMode(PF, BIT5, GPIO_MODE_OUTPUT); // PTC_FAN_5
+	GPIO_SetMode(PF, BIT5, GPIO_MODE_OUTPUT); // MOTOR_6
 	GPIO_SetMode(PF, BIT6, GPIO_MODE_OUTPUT); // VALVE_6
 	GPIO_SetMode(PF, BIT7, GPIO_MODE_OUTPUT); // VALVE_8
 	
@@ -388,8 +388,12 @@ void Load_Output_Init(void)
 	MOTOR_2_DIR = on_off;
 	MOTOR_3 = on_off;
 	MOTOR_4 = on_off;
+	MOTOR_4_DIR = on_off;
 	MOTOR_5 = on_off;
 	MOTOR_6 = on_off;
+	MOTOR_6_DIR = on_off;
+	MOTOR_8 = on_off;
+	MOTOR_9 = on_off;
 	
 	PUMP_1 = on_off;
 	PUMP_2 = on_off;
@@ -422,10 +426,6 @@ void Load_Output_Init(void)
 	
 	PTC_FAN_1 = on_off;
 	PTC_FAN_2 = on_off;
-	PTC_FAN_3 = on_off;
-	PTC_FAN_4 = on_off;
-	PTC_FAN_5 = on_off;
-	PTC_FAN_6 = on_off;
 	
 	LAMP_R = on_off;
 	LAMP_Y = on_off;
@@ -479,8 +479,6 @@ void Device_Init(void)
 		}
 	}
 	
-	set_operation_mode(ALL_Auto);
-	
 	op.ID_AERATION_2 = On;
 	op.ID_MOTOR_9 = On;
 	op.ID_FAN_3 = On;
@@ -492,6 +490,8 @@ void Device_Init(void)
 	water_pump_2_scheduler_init();
 	water_pump_5_scheduler_init();
 	motor_8_scheduler_init();
+	
+	set_operation_mode(ALL_Auto);
 }
 
 int main(void)

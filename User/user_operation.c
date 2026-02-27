@@ -72,6 +72,9 @@ uint32_t RTCToUnixTimestamp(S_RTC_TIME_DATA_T *rtc)
     hour = rtc->u32Hour;
     minute = rtc->u32Minute;
     second = rtc->u32Second;
+	
+	if(year < 1970 || month == 0 || month > 12 || day == 0 || day > 31)
+		return 0;
     
 	for(int y = 1970; y < year; y++)
     {

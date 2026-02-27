@@ -148,13 +148,13 @@ void GPCDEF_IRQHandler(void)
 		}
     }
 	
-	if(GPIO_GET_INT_FLAG(PD, BIT2)) // SW_SPARE_1
+	if(GPIO_GET_INT_FLAG(PD, BIT2)) // SENSOR_TEMP_4
     {
         GPIO_CLR_INT_FLAG(PD, BIT2);
 		
-		if(user_switch[SPARE_1].flag == false)
+		if(alert_sensor[TEMP_4].flag == false)
 		{
-			user_switch[SPARE_1].flag = true;
+			alert_sensor[TEMP_4].flag = true;
 		}
     }
 	
