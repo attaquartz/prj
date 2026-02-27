@@ -12,7 +12,7 @@ void fan_1_reset(void)
 	
 	timer.ID_FAN_1_OP_TIME = 0;
 	
-	fan_1_handler_motor_1_was_off = (op.ID_MOTOR_1_INDEX == Off);
+	fan_1_handler_motor_1_was_off = true; //(op.ID_MOTOR_1_INDEX == Off);
 }
 
 void fan_1_handler(void)
@@ -61,7 +61,7 @@ void fan_2_reset(void)
 	
 	timer.ID_FAN_2_OP_TIME = 0;
 	
-	fan_2_handler_motor_1_was_off = (op.ID_MOTOR_1_INDEX == Off);
+	fan_2_handler_motor_1_was_off = true; //(op.ID_MOTOR_1_INDEX == Off);
 }
 
 void fan_2_handler(void)

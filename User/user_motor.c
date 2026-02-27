@@ -805,7 +805,7 @@ void motor_8_handler(void)
                 
                 uint32_t pump_hour = (sludge_discharge_schedule[i] == 24) ? 0 : sludge_discharge_schedule[i];
                 uint32_t pump_time_seconds = pump_hour * 3600;
-                int32_t off_time_seconds = pump_time_seconds - sp.ID_MOTOR_8_OFF_DELAY;
+                int32_t off_time_seconds = (int32_t)pump_time_seconds - (int32_t)sp.ID_MOTOR_8_OFF_DELAY;
                 
                 if(off_time_seconds < 0)
                 {

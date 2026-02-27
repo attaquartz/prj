@@ -580,7 +580,7 @@ void valve_7_handler(void)
 	}
 	else
 	{
-		if((op.ID_VALVE_8 == On) || (op.ID_PUMP_1 == Off))
+		if((op.ID_VALVE_8 == On) || (op.ID_PUMP_3 == On) || (op.ID_PUMP_1 == Off))
 		{
 			VALVE_7 = Off;
 			
@@ -609,7 +609,7 @@ void valve_8_handler(void)
 	}
 	else
 	{
-		if((op.ID_VALVE_7 == On) || (op.ID_PUMP_3 == Off)) 
+		if((op.ID_VALVE_7 == On) || (op.ID_PUMP_1 == On) || (op.ID_PUMP_3 == Off)) 
 		{
 			VALVE_8 = Off;
 			
