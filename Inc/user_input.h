@@ -3,9 +3,9 @@
 
 #include "user_common.h"
 
-#define LEVEL_SENSOR(i) ((i) == 0 ? SENSOR_LEVEL_H_FILTER : (i) == 1 ? SENSOR_LEVEL_L_FILTER : (i) == 2 ? SENSOR_LEVEL_LL_FILTER : (i) == 3 ? SENSOR_LEVEL_L_REUSE : (i) == 4 ? SENSOR_LEVEL_L_EQ : (i) == 5 ? SENSOR_LEVEL_L_S2 : 0)
-#define ALERT_SWITCH(i) ((i) == 0 ? SENSOR_TEMP_1 : (i) == 1 ? SENSOR_TEMP_2 : (i) == 2 ? SENSOR_TEMP_3 : 0)
-#define USER_SWITCH(i) ((i) == 0 ? SW_AUTO_START : (i) == 1 ? SW_AUTO_STOP : (i) == 2 ? SW_FAUCET : (i) == 3 ? SW_EMERGENCY : 0)
+#define LEVEL_SENSOR(i) ((i) == 0 ? !SENSOR_LEVEL_H_FILTER : (i) == 1 ? !SENSOR_LEVEL_L_FILTER : (i) == 2 ? !SENSOR_LEVEL_LL_FILTER : (i) == 3 ? !SENSOR_LEVEL_L_REUSE : (i) == 4 ? !SENSOR_LEVEL_L_EQ : (i) == 5 ? !SENSOR_LEVEL_L_S2 : 0)
+#define ALERT_SWITCH(i) ((i) == 0 ? !SENSOR_TEMP_1 : (i) == 1 ? !SENSOR_TEMP_2 : (i) == 2 ? !SENSOR_TEMP_3 : (i) == 3 ? !SENSOR_TEMP_4 : 0)
+#define USER_SWITCH(i) ((i) == 0 ? !SW_AUTO_START : (i) == 1 ? !SW_AUTO_STOP : (i) == 2 ? !SW_FAUCET : (i) == 3 ? !SW_EMERGENCY : 0)
 
 #define MODBUS_SERVER_DETECT_MS 10000
 #define ZERO_CROSSING_DETECT_MS 1000
@@ -14,7 +14,7 @@
 #define USER_SWITCH_DETECT_MS 200
 
 #define LEVEL_SENSOR_MAX 6
-#define ALERT_SENSOR_MAX 5
+#define ALERT_SENSOR_MAX 4
 #define USER_SWITCH_MAX 5
 #define CT_SENSOR_MAX 5
 

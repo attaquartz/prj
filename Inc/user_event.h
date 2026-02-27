@@ -3,7 +3,7 @@
 
 #include "user_common.h"
 
-#define EVENT_QUEUE_SIZE 512
+#define EVENT_QUEUE_SIZE 32
 
 typedef enum
 {

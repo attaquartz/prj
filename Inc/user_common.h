@@ -40,10 +40,10 @@
 #define MOTOR_2 PB14
 #define MOTOR_2_DIR PB13
 #define MOTOR_3 PE11
-#define MOTOR_4 PE10
+#define MOTOR_4 PA11
 #define MOTOR_4_DIR PE10
 #define MOTOR_5 PC11
-#define MOTOR_6 PE12
+#define MOTOR_6 PF5
 #define MOTOR_6_DIR PE12
 #define MOTOR_7_PWM PWM1_CH1
 #define MOTOR_7_FG PC9
@@ -79,11 +79,11 @@
 #define FAN_2 PA9
 #define FAN_3 PE9
 
-#define PTC_FAN_6 PA11
-#define PTC_FAN_5 PF5
-#define PTC_FAN_4 PA7
-#define PTC_FAN_3 PA6
-#define PTC_FAN_2 PA5
+//#define PTC_FAN_6 PA11
+//#define PTC_FAN_5 PF5
+#define PTC_FAN_2 PA7
+//#define PTC_FAN_3 PA6
+//#define PTC_FAN_2 PA5
 #define PTC_FAN_1 PA4
 
 #define LAMP_R PC0
@@ -98,6 +98,7 @@
 #define SENSOR_TEMP_1 PB3
 #define SENSOR_TEMP_2 PB4
 #define SENSOR_TEMP_3 PD14
+#define SENSOR_TEMP_4 PD2
 
 #define SENSOR_LEVEL_H_FILTER PA12
 #define SENSOR_LEVEL_L_FILTER PA13
@@ -116,7 +117,7 @@
 #define SW_AUTO_STOP PD3
 #define SW_FAUCET PD4
 #define SW_EMERGENCY PF2
-#define SW_SPARE_1 PD2
+//#define SW_SPARE_1 PD2
 
 #define SENSOR_ZERO_CROSSING PD0//INT3
 
