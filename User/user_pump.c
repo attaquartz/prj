@@ -245,6 +245,8 @@ void pump_3_scheduler(void)
 							}
 							
 							op.ID_PUMP_3_START_TIME_INDEX = i;
+							
+							timer.ID_PUMP_3_ON_TIME = 0;
 						}
 					}
 				}
@@ -268,13 +270,13 @@ void pump_3_handler(void)
     {
         if(op.ID_PUMP_3 == On)
         {
-            timer.ID_PUMP_3_ON_TIME = 0;
-            
             PUMP_3 = Off;
             
             op.ID_PUMP_3 = Off;
             op.ID_PUMP_3_START_TIME_INDEX = 0;
         }
+		
+		timer.ID_PUMP_3_ON_TIME = 0;
         
         return;
     }

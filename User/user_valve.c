@@ -8,6 +8,7 @@ static bool valve_1_day_changed = false;
 
 static bool valve_2_scheduler_water_pump_1_was_on = false;
 static bool valve_2_scheduler_water_pump_2_was_on = false;
+static bool valve_2_scheduler_index = false;
 
 void valve_1_scheduler_init(void)
 {
@@ -179,6 +180,7 @@ void valve_2_reset(void)
 	
 	valve_2_scheduler_water_pump_1_was_on = false;
 	valve_2_scheduler_water_pump_2_was_on = false;
+	valve_2_scheduler_index = false;
 }
 
 void valve_2_scheduler(void)
@@ -211,6 +213,8 @@ void valve_2_scheduler(void)
             {
                 valve_2_scheduler_water_pump_1_was_on = false;
                 valve_2_scheduler_water_pump_2_was_on = false;
+				
+				valve_2_scheduler_index = true;
             }
         }
     }
@@ -237,7 +241,8 @@ void valve_2_handler(void)
     {
         if(op.ID_VALVE_2 == Off)
         {
-			if((op.ID_WATER_PUMP_1 == Off) && (op.ID_WATER_PUMP_2 == Off))
+			//if((op.ID_WATER_PUMP_1 == Off) && (op.ID_WATER_PUMP_2 == Off))
+			if(valve_2_scheduler_index == true)
 			{
 				if(valve_2_on_delay[op.ID_VALVE_2_OP_INDEX] > 0)
 				{
@@ -278,6 +283,8 @@ void valve_2_handler(void)
 					
                     op.ID_VALVE_2 = Off;
                     op.ID_VALVE_2_OP_INDEX = 0;
+					
+					valve_2_scheduler_index = false;
                 }
             }
             else
@@ -286,6 +293,8 @@ void valve_2_handler(void)
 				
                 op.ID_VALVE_2 = Off;
                 op.ID_VALVE_2_OP_INDEX = 0;
+				
+				valve_2_scheduler_index = false;
             }
         }
     }

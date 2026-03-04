@@ -21,12 +21,12 @@ void fan_1_handler(void)
 	{
 		if(op.ID_FAN_1 == Off)
 		{
-			timer.ID_FAN_1_OP_TIME = 0;
-		
 			FAN_1 = On;
 			
 			op.ID_FAN_1 = On;
 		}
+		
+		timer.ID_FAN_1_OP_TIME = 0;
 	}
 	
 	fan_1_handler_motor_1_was_off = (op.ID_MOTOR_1_INDEX == Off);
@@ -70,12 +70,12 @@ void fan_2_handler(void)
 	{
 		if(op.ID_FAN_2 == Off)
 		{
-			timer.ID_FAN_2_OP_TIME = 0;
-		
 			FAN_2 = On;
 			
 			op.ID_FAN_2 = On;
 		}
+		
+		timer.ID_FAN_2_OP_TIME = 0;
 	}
 	
 	fan_2_handler_motor_1_was_off = (op.ID_MOTOR_1_INDEX == Off);
@@ -153,10 +153,10 @@ void ptc_fan_handler(void)
 			PTC_FAN_1 = On;
 			PTC_FAN_2 = On;
 			
-			op.ID_PTC_FAN = (PTC_FAN_2 << 1) | (PTC_FAN_1 << 0);
-			
-			timer.ID_PTC_FAN_OP_TIME = 0;
+			op.ID_PTC_FAN = (PTC_FAN_2 << 1) | (PTC_FAN_1 << 0);	
 		}
+		
+		timer.ID_PTC_FAN_OP_TIME = 0;
 		
 		ptc_fan_handler_motor_1_was_on = false;
 	}
