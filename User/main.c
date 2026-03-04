@@ -7,12 +7,14 @@ void SYS_Init(void)
     /*---------------------------------------------------------------------------------------------------------*/
 	
 	/* Enable clock source */
-    CLK_EnableXtalRC(CLK_PWRCTL_LXTEN_Msk|CLK_PWRCTL_HIRCEN_Msk);
-	//CLK_EnableXtalRC(CLK_PWRCTL_LIRCEN_Msk|CLK_PWRCTL_HIRCEN_Msk);
+	#ifndef USE_LXT
+	CLK_EnableXtalRC(CLK_PWRCTL_LIRCEN_Msk|CLK_PWRCTL_HIRCEN_Msk);
+	#endif
 	
 	/* Waiting for clock source ready */
-    CLK_WaitClockReady(CLK_STATUS_LXTSTB_Msk|CLK_STATUS_HIRCSTB_Msk);
-	//CLK_WaitClockReady(CLK_STATUS_LIRCSTB_Msk|CLK_STATUS_HIRCSTB_Msk);
+	#ifndef USE_LXT
+	CLK_WaitClockReady(CLK_STATUS_LIRCSTB_Msk|CLK_STATUS_HIRCSTB_Msk);
+	#endif
 
     /* Set core clock */
     CLK_SetCoreClock(FREQ_72MHZ);
@@ -47,8 +49,9 @@ void SYS_Init(void)
     CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UARTSEL_HIRC, CLK_CLKDIV0_UART(1));
 	CLK_SetModuleClock(UART1_MODULE, CLK_CLKSEL1_UARTSEL_HIRC, CLK_CLKDIV0_UART(1));
     CLK_SetModuleClock(UART2_MODULE, CLK_CLKSEL1_UARTSEL_HIRC, CLK_CLKDIV0_UART(1));
-	CLK_SetModuleClock(RTC_MODULE, CLK_CLKSEL2_RTCSEL_LXT, MODULE_NoMsk);
-	//CLK_SetModuleClock(RTC_MODULE, CLK_CLKSEL2_RTCSEL_LIRC, MODULE_NoMsk);
+	#ifndef USE_LXT
+	CLK_SetModuleClock(RTC_MODULE, CLK_CLKSEL2_RTCSEL_LIRC, MODULE_NoMsk);
+	#endif
     CLK_SetModuleClock(WDT_MODULE, CLK_CLKSEL1_WDTSEL_LIRC, MODULE_NoMsk);
 
     /* Update System Core Clock */
@@ -157,8 +160,16 @@ void RTC_Init(void)
 	bool is_first_boot = false;
 	uint8_t rtc_open_try = 0;
 	
+	#ifdef USE_LXT
+	SYS_UnlockReg();
+	
 	SYS->GPF_MFPL &= ~(SYS_GPF_MFPL_PF1MFP_Msk | SYS_GPF_MFPL_PF0MFP_Msk);
 	SYS->GPF_MFPL |= SYS_GPF_MFPL_PF1MFP_X32_IN | SYS_GPF_MFPL_PF0MFP_X32_OUT;
+	
+	CLK_EnableXtalRC(CLK_PWRCTL_LXTEN_Msk|CLK_PWRCTL_HIRCEN_Msk);
+	CLK_WaitClockReady(CLK_STATUS_LXTSTB_Msk|CLK_STATUS_HIRCSTB_Msk);
+	CLK_SetModuleClock(RTC_MODULE, CLK_CLKSEL2_RTCSEL_LXT, MODULE_NoMsk);
+	#endif
 	
 	RTC_GetDateAndTime(&sWriteRTC);
 	
@@ -509,7 +520,7 @@ int main(void)
 	TIMER1_Init();
 	TIMER2_Init();
 	TIMER3_Init();
-	//WDT_Init();
+	WDT_Init();
 	
 	Event_Init();
 	eeprom_Read();
@@ -532,7 +543,7 @@ int main(void)
 	{
 		Main_Process();
 		ModbusRTU_Process();
-		//WDT_RESET_COUNTER();
+		WDT_RESET_COUNTER();
 	}
 }
 

@@ -448,6 +448,7 @@ void auto_handler(void)
 		valve_8_handler();
 		aeration_1_handler();
 		aeration_2_handler();
+		water_pump_4_handler();
 		
 		// BIO TANK
 		motor_8_handler();
@@ -485,11 +486,10 @@ void auto_handler(void)
 		motor_6_handler();
 		motor_7_handler();
 		temp_up_limit_time_handler();
+		radiator_handler();
 	}
 	
-	radiator_handler();
 	fan_3_handler();
-	water_pump_4_handler();
 }
 
 void Main_Process(void)
