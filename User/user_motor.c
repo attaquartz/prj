@@ -704,7 +704,7 @@ void motor_7_handler(void)
         }
     }
 	
-	if(op.ID_HEATER_1 == On)
+	if((op.ID_MOTOR_7 == On) && (op.ID_HEATER_1 == On))
     {
         motor_7_handler_heater_1_was_on = true;
     }
