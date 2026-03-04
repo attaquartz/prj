@@ -182,7 +182,7 @@ nmbs_error handler_write_single_registers_nmbs_server(uint16_t address, uint16_t
 	if(address >= REGS_SYSTEM_PARAMETER_ADDR)
 		return NMBS_EXCEPTION_ILLEGAL_DATA_ADDRESS;
 	
-    if(address >= REGS_ADDR_MAX)
+    if(address > REGS_ADDR_MAX + 1)
 	{
         return NMBS_EXCEPTION_ILLEGAL_DATA_ADDRESS;
     }

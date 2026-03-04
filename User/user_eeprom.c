@@ -157,8 +157,8 @@ const system_parameter_t default_params =
 
 static void eeprom_DefaultSet(void)
 {
-	uint32_t i = 0, j = 0;
-	uint32_t data = 0, index = 0;
+	uint32_t i = 0;
+	uint32_t data = 0;
 	uint32_t Crc = 0;
 	
 	memset(eeprom.Data, 0, eeprom_Size);

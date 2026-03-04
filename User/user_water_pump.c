@@ -12,7 +12,7 @@ static uint8_t water_pump_2_power_on_hour = 0xff;
 static uint32_t water_pump_2_day_counter = 1;
 static bool water_pump_2_day_changed = false;
 
-bool water_pump_4_off_condition = false;
+static bool water_pump_4_off_condition = false;
 
 static uint8_t water_pump_5_schedule_hour_check = 0xff;
 static uint8_t water_pump_5_last_hour = 0xff;

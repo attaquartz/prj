@@ -502,7 +502,8 @@ void Device_Init(void)
 	water_pump_5_scheduler_init();
 	motor_8_scheduler_init();
 	
-	set_operation_mode(ALL_Auto);
+	//set_operation_mode(ALL_Auto);
+	set_operation_mode(ALL_Manual);
 }
 
 int main(void)
